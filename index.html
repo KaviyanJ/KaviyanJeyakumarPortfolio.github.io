@@ -29,122 +29,129 @@
 						</ul>
 					</div>
 
+				<!-- Header -->
+					<header id="header">
+						<a href="index.html" class="logo">Portfolio</a>
+					</header>
+
 				<!-- Nav -->
 					<nav id="nav">
 						<ul class="links">
-							<li><a class ="active"><a href="index.html">Projects</a></li>
+							<!-- Clean Navigation: Only Home and About -->
+							<li class="active"><a href="index.html">Projects</a></li>
 							<li><a href="aboutme.html">About Me</a></li>
-							<li><a href="bed_of_nail.html">Bed of Nails V3</a></li>
-							<li><a href="optibom.html">OptiBOM</a></li>
-							<li><a href="ecrb_datasheet.html">ETL CAN Hitch Datasheet</a></li>
-							<li><a href="buck_converter.html">Buck Converter</a></li>
-							<li><a href="rescue_touch.html">RescueTouch</a></li>
-							<li><a href="solar_board.html">Solar Board</a></li>
-							<li><a href="cube_manual.html">Cube Manual</a></li>
 						</ul>
 						<ul class="icons">
-							<li><a href="https://www.linkedin.com/in/kaviyan-jeyakumar-606091318/" class="icon brands fa-linkedin"target="_blank"><span class="label">LinkedIn</span></a></li>
-							<li><a href="https://github.com/KaviyanJ" class="icon brands fa-github"target="_blank"><span class="label">GitHub</span></a></li>
+							<li><a href="https://www.linkedin.com/in/kaviyan-jeyakumar-606091318/" class="icon brands fa-linkedin" target="_blank"><span class="label">LinkedIn</span></a></li>
+							<li><a href="https://github.com/KaviyanJ" class="icon brands fa-github" target="_blank"><span class="label">GitHub</span></a></li>
 						</ul>
 					</nav>
 
 				<!-- Main -->
 					<div id="main">
 
-						<!-- Featured Post -->
+						<!-- Featured Post (NOW BED OF NAILS) -->
 							<article class="post featured">
 								<header class="major">
-									<span class="date"></span>
-									<br>
-									<h2><a href="buck_converter.html"target="_blank">Buck Converter<br />
-									Simulation</a></h2>
-									<p>I developed a high-fidelity LTspice simulation to model and analyze a buck converter's power stage and feedback loop. The primary goal 
-										was to optimize its real-world performance by validating power efficiency, transient response, and stability before 
-										committing to the final PCB design.</p>
+									<span class="date">PCB Design & Validation</span>
+									<h2><a href="bed_of_nail.html">Bed of Nails V3<br />
+									Test Fixture</a></h2>
+									<p>I spearheaded the full hardware lifecycle of a 2-layer test fixture, progressing from LTSpice simulation and breadboard prototyping to Altium layout. I engineered a custom window comparator and Python validation scripts to automate 100% of termination checks for production units, ensuring zero defects in shipped hardware.</p>
 								</header>
-								<a href="buck_converter.html" class="image main"target="_blank"><img src="https://www.analog.com/en/_/media/analog/en/evaluation-board-images/images/dc1895a-4.gif?rev=17ad109a0db64554af778a9a5411c6bf&sc_lang=en" alt="" /></a>
+								<!-- Replace the src below with your specific Bed of Nails image link -->
+								<a href="bed_of_nail.html" class="image main"><img src="https://via.placeholder.com/1200x600?text=Bed+of+Nails+Project" alt="" /></a>
 								<ul class="actions special">
-									<li><a href="buck_converter.html" class="button large"target="_blank">View Project</a></li>
+									<li><a href="bed_of_nail.html" class="button large">View Project</a></li>
 								</ul>
 							</article>
 
-						<!-- Posts -->
+						<!-- Posts Grid -->
 							<section class="posts">
+								
+								<!-- Project 1: Buck Converter (Moved here) -->
 								<article>
 									<header>
-										<span class="date"></span>
-										<h2><a href="rescue_touch.html"target="_blank">RescueTouch Emergency<br />
+										<span class="date">Simulation & Power Electronics</span>
+										<h2><a href="buck_converter.html">Buck Converter<br />
+										Simulation</a></h2>
+									</header>
+									<a href="buck_converter.html" class="image fit"><img src="https://www.analog.com/en/_/media/analog/en/evaluation-board-images/images/dc1895a-4.gif?rev=17ad109a0db64554af778a9a5411c6bf&sc_lang=en" alt="" /></a>
+									<p>Developed a high-fidelity LTspice simulation to validate power efficiency, transient response, and stability before PCB design.</p>
+									<ul class="actions special">
+										<li><a href="buck_converter.html" class="button">View Project</a></li>
+									</ul>
+								</article>
+
+								<!-- Project 2: OptiBOM -->
+								<article>
+									<header>
+										<span class="date">Full-Stack Development</span>
+										<h2><a href="optibom.html">OptiBOM<br />
+										Automation</a></h2>
+									</header>
+									<a href="optibom.html" class="image fit"><img src="https://via.placeholder.com/600x400?text=OptiBOM" alt="" /></a>
+									<p>Architected a hybrid procurement tool (Node.js/Google Apps Script) integrating Digi-Key APIs to reduce manual BOM analysis time by over 90%.</p>
+									<ul class="actions special">
+										<li><a href="optibom.html" class="button">View Project</a></li>
+									</ul>
+								</article>
+
+								<!-- Project 3: ETL CAN Hitch -->
+								<article>
+									<header>
+										<span class="date">Commercial Launch</span>
+										<h2><a href="ecrb_datasheet.html">ETL CAN Hitch<br />
+										Datasheet</a></h2>
+									</header>
+									<a href="ecrb_datasheet.html" class="image fit"><img src="https://via.placeholder.com/600x400?text=CAN+Hitch" alt="" /></a>
+									<p>Authored the technical datasheet and performed electrical validation for a J1939 CAN Bridge, ensuring ±58V fault protection for commercial release.</p>
+									<ul class="actions special">
+										<li><a href="ecrb_datasheet.html" class="button">View Project</a></li>
+									</ul>
+								</article>
+
+								<!-- Project 4: RescueTouch -->
+								<article>
+									<header>
+										<span class="date">Embedded Systems</span>
+										<h2><a href="rescue_touch.html">RescueTouch Emergency<br />
 										System</a></h2>
 									</header>
-									<a href="rescue_touch.html" class="image fit"target="_blank"><img src="https://m.media-amazon.com/images/I/61DX7isVBBL._UF894,1000_QL80_.jpg" /></a>
-									<p>I designed and developed a two-board emergency system using STM32 microcontrollers, handling both the schematic design in KiCad and the C++ firmware development. 
-										The project's main goal was to create a robust assistive device by establishing reliable UART communication between a Braille-labeled input board and an LCD output board.</p>
+									<a href="rescue_touch.html" class="image fit"><img src="https://m.media-amazon.com/images/I/61DX7isVBBL._UF894,1000_QL80_.jpg" alt="" /></a>
+									<p>Designed a two-board STM32 emergency system, handling KiCad schematics and C++ firmware to establish reliable UART communication.</p>
 									<ul class="actions special">
-										<li><a href="rescue_touch.html" class="button"target="_blank">View Project</a></li>
+										<li><a href="rescue_touch.html" class="button">View Project</a></li>
 									</ul>
 								</article>
+
+								<!-- Project 5: Solar Board -->
 								<article>
 									<header>
-										<span class="date"></span>
-										<h2><a href="solar_board.html"target="_blank">Solar Cell Board<br />
+										<span class="date">PCB Assembly</span>
+										<h2><a href="solar_board.html">Solar Cell Board<br />
 										Assembly</a></h2>
 									</header>
-									<a href="solar_board.html" class="image fit"target="_blank"><img src="https://nanoavionics.com/wp-content/uploads/2025/04/nanoavionics-smallsat-small-satellite-microsatellite-aluminium-honeycomb-carbon-fiber-double-deployable-solar-panels.jpg" alt="" /></a>
-									<p>I was responsible for the hands-on assembly of the solar cell power PCB, which involved populating the board with all the specified components from the design. 
-										The objective was to bridge the gap between simulation and reality, validating that the physical circuit's performance metrics aligned with the results we had predicted in our LTspice models.</p>
+									<a href="solar_board.html" class="image fit"><img src="https://nanoavionics.com/wp-content/uploads/2025/04/nanoavionics-smallsat-small-satellite-microsatellite-aluminium-honeycomb-carbon-fiber-double-deployable-solar-panels.jpg" alt="" /></a>
+									<p>Executed the manual assembly and soldering of a solar power PCB, validating physical performance metrics against LTspice simulation models.</p>
 									<ul class="actions special">
-										<li><a href="solar_board.html" class="button"target="_blank">View Project</a></li>
+										<li><a href="solar_board.html" class="button">View Project</a></li>
 									</ul>
 								</article>
+
+								<!-- Project 6: Cube Manual -->
 								<article>
 									<header>
-										<span class="date"></span>
-										<h2><a href="cube_manual.html"target="_blank">Snake Cube Puzzle<br />
+										<span class="date">Technical Communication</span>
+										<h2><a href="cube_manual.html">Snake Cube Puzzle<br />
 										3x3 Manual</a></h2>
 									</header>
-									<a href="cube_manual.html" class="image fit"target="_blank"><img src="https://www.mastermindtoys.com/cdn/shop/files/110315_1_1200x.jpg?v=1742530275" alt="" /></a>
-									<p>To make the 3x3 puzzle cube accessible to everyone, I designed a user-friendly manual. The project 
-										focused on clear visual communication, breaking down complex moves into easy-to-follow steps and diagrams.</p>
+									<a href="cube_manual.html" class="image fit"><img src="https://www.mastermindtoys.com/cdn/shop/files/110315_1_1200x.jpg?v=1742530275" alt="" /></a>
+									<p>Designed a user-friendly visual manual for the 3x3 snake cube puzzle, focusing on clear technical communication and diagrammatic instructions.</p>
 									<ul class="actions special">
-										<li><a href="cube_manual.html" class="button"target="_blank">View Project</a></li>
+										<li><a href="cube_manual.html" class="button">View Project</a></li>
 									</ul>
 								</article>
-								<!-- <article>
-									<header>
-										<span class="date">April 14, 2017</span>
-										<h2><a href="#">Tempus sed<br />
-										nulla imperdiet</a></h2>
-									</header>
-									<a href="#" class="image fit"><img src="images/pic05.jpg" alt="" /></a>
-									<p>Donec eget ex magna. Interdum et malesuada fames ac ante ipsum primis in faucibus. Pellentesque venenatis dolor imperdiet dolor mattis sagittis magna etiam.</p>
-									<ul class="actions special">
-										<li><a href="#" class="button">Full Story</a></li>
-									</ul>
-								</article>
-								<article>
-									<header>
-										<span class="date">April 11, 2017</span>
-										<h2><a href="#">Odio magna<br />
-										sed consectetur</a></h2>
-									</header>
-									<a href="#" class="image fit"><img src="images/pic06.jpg" alt="" /></a>
-									<p>Donec eget ex magna. Interdum et malesuada fames ac ante ipsum primis in faucibus. Pellentesque venenatis dolor imperdiet dolor mattis sagittis magna etiam.</p>
-									<ul class="actions special">
-										<li><a href="#" class="button">Full Story</a></li>
-									</ul>
-								</article>
-								<article>
-									<header>
-										<span class="date">April 7, 2017</span>
-										<h2><a href="#">Augue lorem<br />
-										primis vestibulum</a></h2>
-									</header>
-									<a href="#" class="image fit"><img src="images/pic07.jpg" alt="" /></a>
-									<p>Donec eget ex magna. Interdum et malesuada fames ac ante ipsum primis in faucibus. Pellentesque venenatis dolor imperdiet dolor mattis sagittis magna etiam.</p>
-									<ul class="actions special">
-										<li><a href="#" class="button">Full Story</a></li>
-									</ul>
-								</article> -->
+
 							</section> 
 					</div>
 
@@ -153,7 +160,7 @@
 						<section class="split contact">
 							<section class="field">
 								<h3>Address</h3>
-								<p>Toronto, Ontario, Canada<br />
+								<p>Toronto, Ontario, Canada</p>
 							</section>
 							<section>
 								<h3>Phone</h3>
@@ -161,22 +168,22 @@
 							</section>
 							<section>
 								<h3>Email</h3>
-								<p><a href="mailto:kaviyan.n.jeyakumar@gmail.com?"target="_blank">kaviyan.n.jeyakumar@gmail.com</a></p>
+								<p><a href="mailto:kaviyan.n.jeyakumar@gmail.com">kaviyan.n.jeyakumar@gmail.com</a></p>
 							</section>
 							<section>
 								<h3>Social</h3>
 								<ul class="icons alt">
-									<li><a href="https://www.linkedin.com/in/kaviyan-jeyakumar-606091318/" class="icon brands alt fa-linkedin"target="_blank"><span class="label">LinkedIn</span></a></li>
-									<li><a href="https://github.com/KaviyanJ" class="icon brands alt fa-github"target="_blank"><span class="label">GitHub</span></a></li>
+									<li><a href="https://www.linkedin.com/in/kaviyan-jeyakumar-606091318/" class="icon brands alt fa-linkedin" target="_blank"><span class="label">LinkedIn</span></a></li>
+									<li><a href="https://github.com/KaviyanJ" class="icon brands alt fa-github" target="_blank"><span class="label">GitHub</span></a></li>
 								</ul>
 							</section>
 						</section>
 					</footer>
 
-				<!-- Copyright
+				<!-- Copyright -->
 					<div id="copyright">
-						<ul><li>&copy; Untitled</li><li>Design: <a href="https://html5up.net">HTML5 UP</a></li></ul>
-					</div> -->
+						<ul><li>&copy; Kaviyan Jeyakumar</li><li>Design: HTML5 UP</li></ul>
+					</div>
 
 			</div>
 
