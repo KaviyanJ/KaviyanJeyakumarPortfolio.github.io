@@ -1,202 +1,929 @@
-<!DOCTYPE HTML>
-<!--
-	Massively by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
-<html>
-	<head>
-		<title>Kaviyan Jeyakumar Portfolio</title>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<link rel="stylesheet" href="assets/css/main.css" />
-		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
-	</head>
-	<body class="is-preload">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kaviyan Jeyakumar — Electrical Engineer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    :root {
+      --bg: #07090f;
+      --surface: #0d1117;
+      --card: #111827;
+      --card-hover: #1a2332;
+      --border: rgba(0, 229, 255, 0.12);
+      --border-hover: rgba(0, 229, 255, 0.45);
+      --cyan: #00e5ff;
+      --cyan-glow: rgba(0, 229, 255, 0.25);
+      --purple: #a855f7;
+      --purple-glow: rgba(168, 85, 247, 0.25);
+      --orange: #f97316;
+      --orange-glow: rgba(249, 115, 22, 0.25);
+      --green: #10b981;
+      --text: #e2e8f0;
+      --muted: #64748b;
+      --font: 'Inter', system-ui, sans-serif;
+      --mono: 'JetBrains Mono', monospace;
+    }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      line-height: 1.6;
+      cursor: none;
+      overflow-x: hidden;
+    }
+    a { color: inherit; text-decoration: none; }
 
-		<!-- Wrapper -->
-			<div id="wrapper" class="fade-in">
+    /* CURSOR */
+    #cur-ring {
+      position: fixed; width: 38px; height: 38px;
+      border: 1.5px solid var(--cyan); border-radius: 50%;
+      pointer-events: none; z-index: 9999;
+      transform: translate(-50%,-50%);
+      transition: width .2s, height .2s, background .2s, border-color .2s;
+    }
+    #cur-dot {
+      position: fixed; width: 6px; height: 6px;
+      background: var(--cyan); border-radius: 50%;
+      pointer-events: none; z-index: 10000;
+      transform: translate(-50%,-50%);
+      box-shadow: 0 0 8px var(--cyan), 0 0 20px var(--cyan);
+    }
+    .cur-trail {
+      position: fixed; border-radius: 50%;
+      pointer-events: none; z-index: 9997;
+      transform: translate(-50%,-50%);
+      background: var(--cyan);
+    }
+    body.cur-hover #cur-ring {
+      width: 54px; height: 54px;
+      background: rgba(0,229,255,0.07);
+    }
 
-				<!-- Intro -->
-					<div id="intro">
-						<h1>Kaviyan Jeyakumar<br />
-						Portfolio</h1>
-						<p>Waterloo Electrical Engineering student with hands-on experience in the full hardware development cycle, 
-							from circuit simulation and PCB design to hands-on testing and validation. 
-							Website designed by <a href="https://www.linkedin.com/in/kaviyan-jeyakumar-606091318/" target="_blank">@kaviyan_jeyakumar</a></p>
-						<ul class="actions">
-							<li><a href="#header" class="button icon solid solo fa-arrow-down scrolly">Continue</a></li>
-						</ul>
-					</div>
+    /* SCROLLBAR */
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: var(--surface); }
+    ::-webkit-scrollbar-thumb { background: var(--cyan); border-radius: 3px; }
 
-				<!-- Header -->
-					<header id="header">
-						<a href="index.html" class="logo">Portfolio</a>
-					</header>
+    /* CANVAS / CIRCUIT BG */
+    #c-particles { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+    #c-circuit {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      opacity: 0.05;
+    }
 
-				<!-- Nav -->
-					<nav id="nav">
-						<ul class="links">
-							<!-- Clean Navigation: Only Home and About -->
-							<li class="active"><a href="index.html">Projects</a></li>
-							<li><a href="aboutme.html">About Me</a></li>
-						</ul>
-						<ul class="icons">
-							<li><a href="https://www.linkedin.com/in/kaviyan-jeyakumar-606091318/" class="icon brands fa-linkedin" target="_blank"><span class="label">LinkedIn</span></a></li>
-							<li><a href="https://github.com/KaviyanJ" class="icon brands fa-github" target="_blank"><span class="label">GitHub</span></a></li>
-						</ul>
-					</nav>
+    /* NAV */
+    #topnav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 2.5rem;
+      background: rgba(7,9,15,0.75);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-family: var(--mono); font-size: 1rem;
+      color: var(--cyan); letter-spacing: 2px;
+    }
+    .nav-logo em { color: var(--muted); font-style: normal; }
+    .nav-links { display: flex; gap: 2.2rem; list-style: none; }
+    .nav-links a {
+      font-size: 0.8rem; font-weight: 600;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      color: var(--muted); position: relative;
+      transition: color .25s;
+    }
+    .nav-links a::after {
+      content: ''; position: absolute; bottom: -4px; left: 0; right: 0;
+      height: 1px; background: var(--cyan);
+      transform: scaleX(0); transition: transform .25s;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--cyan); }
+    .nav-links a:hover::after, .nav-links a.active::after { transform: scaleX(1); }
+    .nav-icons { display: flex; gap: 1.2rem; list-style: none; }
+    .nav-icons a {
+      font-size: 1rem; color: var(--muted);
+      transition: color .25s, text-shadow .25s;
+    }
+    .nav-icons a:hover { color: var(--cyan); text-shadow: 0 0 12px var(--cyan); }
 
-				<!-- Main -->
-					<div id="main">
+    /* SECTION LAYOUT */
+    section { position: relative; z-index: 1; }
+    .wrap { max-width: 1200px; margin: 0 auto; padding: 6rem 2rem; }
 
-						<!-- Featured Post (NOW BED OF NAILS) -->
-							<article class="post featured">
-								<header class="major">
-									<span class="date">PCB Design & Validation</span>
-									<h2><a href="bed_of_nail.html">Bed of Nails V3<br />
-									Test Fixture</a></h2>
-									<p>I spearheaded the full hardware lifecycle of a 2-layer test fixture, progressing from LTSpice simulation and breadboard prototyping to Altium layout. I engineered a custom window comparator and Python validation scripts to automate 100% of termination checks for production units, ensuring zero defects in shipped hardware.</p>
-								</header>
-								<!-- FIXED IMAGE LINK HERE -->
-								<a href="bed_of_nail.html" class="image main"><img src="https://drive.google.com/thumbnail?id=1wKanGJe3JNhrho25JFkWqPenoO8fvS0U&sz=w1200" alt="Bed of Nails" /></a>
-								<ul class="actions special">
-									<li><a href="bed_of_nail.html" class="button large">View Project</a></li>
-								</ul>
-							</article>
+    /* HERO */
+    #hero {
+      min-height: 100vh; display: flex;
+      align-items: center; justify-content: center;
+      padding: 8rem 2rem 4rem; text-align: center;
+    }
+    .hero-inner { max-width: 900px; }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: .5rem;
+      background: rgba(0,229,255,0.07); border: 1px solid var(--border);
+      border-radius: 100px; padding: .4rem 1.1rem;
+      font-family: var(--mono); font-size: .72rem; color: var(--cyan);
+      letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 1.8rem;
+    }
+    .hero-badge::before {
+      content: ''; width: 7px; height: 7px; background: var(--green);
+      border-radius: 50%; animation: pulse-dot 2s infinite;
+    }
+    @keyframes pulse-dot {
+      0%,100% { box-shadow: 0 0 0 0 rgba(16,185,129,.7); }
+      50% { box-shadow: 0 0 0 6px rgba(16,185,129,0); }
+    }
+    .hero-name {
+      font-size: clamp(2.8rem, 8vw, 5.5rem); font-weight: 900;
+      letter-spacing: -2px; line-height: 1.05; margin-bottom: .6rem;
+    }
+    .hero-name .fn { color: var(--text); }
+    .hero-name .ln {
+      color: var(--cyan);
+      text-shadow: 0 0 40px rgba(0,229,255,.45), 0 0 80px rgba(0,229,255,.15);
+    }
+    .hero-sub {
+      font-family: var(--mono); font-size: clamp(.85rem, 2vw, 1.15rem);
+      color: var(--muted); margin-bottom: 1.6rem; min-height: 1.8em;
+    }
+    .hero-sub .typed { color: var(--cyan); }
+    .hero-sub .blink { color: var(--cyan); animation: blink 1s steps(1) infinite; }
+    @keyframes blink { 50% { opacity: 0; } }
+    .hero-desc {
+      max-width: 600px; margin: 0 auto 2.5rem;
+      color: var(--muted); font-size: .97rem; line-height: 1.85;
+    }
+    .hero-stats {
+      display: flex; justify-content: center;
+      flex-wrap: wrap; gap: 1.2rem; margin-bottom: 2.8rem;
+    }
+    .stat-pill {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 14px; padding: 1.1rem 1.6rem;
+      text-align: center; min-width: 130px;
+      transition: border-color .3s, transform .3s, box-shadow .3s;
+    }
+    .stat-pill:hover {
+      border-color: var(--cyan); transform: translateY(-4px);
+      box-shadow: 0 10px 30px rgba(0,0,0,.4), 0 0 20px var(--cyan-glow);
+    }
+    .stat-num {
+      font-family: var(--mono); font-size: 1.9rem; font-weight: 700;
+      color: var(--cyan); line-height: 1;
+    }
+    .stat-lbl {
+      font-size: .68rem; color: var(--muted);
+      text-transform: uppercase; letter-spacing: 1.2px; margin-top: .35rem;
+    }
+    .hero-btns { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
+    .btn-p {
+      background: var(--cyan); color: var(--bg); padding: .8rem 2rem;
+      border-radius: 8px; font-weight: 700; font-size: .85rem;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      box-shadow: 0 0 24px var(--cyan-glow);
+      transition: transform .2s, box-shadow .2s;
+    }
+    .btn-p:hover { transform: translateY(-2px); box-shadow: 0 0 36px var(--cyan-glow), 0 8px 20px rgba(0,0,0,.3); }
+    .btn-s {
+      background: transparent; color: var(--text); padding: .8rem 2rem;
+      border-radius: 8px; font-weight: 600; font-size: .85rem;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      border: 1px solid var(--border);
+      transition: border-color .2s, color .2s, transform .2s;
+    }
+    .btn-s:hover { border-color: var(--cyan); color: var(--cyan); transform: translateY(-2px); }
+    .scroll-hint {
+      position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: .4rem;
+      color: var(--muted); font-size: .7rem; letter-spacing: 2px; text-transform: uppercase;
+      animation: bob 2.2s ease-in-out infinite;
+    }
+    @keyframes bob { 0%,100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(7px); } }
 
-						<!-- Posts Grid -->
-							<section class="posts">
-								
-								<!-- Project 1: Buck Converter (Moved here) -->
-								<article>
-									<header>
-										<span class="date">Simulation & Power Electronics</span>
-										<h2><a href="buck_converter.html">Buck Converter<br />
-										Simulation</a></h2>
-									</header>
-									<a href="buck_converter.html" class="image fit"><img src="https://www.analog.com/en/_/media/analog/en/evaluation-board-images/images/dc1895a-4.gif?rev=17ad109a0db64554af778a9a5411c6bf&sc_lang=en" alt="" /></a>
-									<p>Developed a high-fidelity LTspice simulation to validate power efficiency, transient response, and stability before PCB design.</p>
-									<ul class="actions special">
-										<li><a href="buck_converter.html" class="button">View Project</a></li>
-									</ul>
-								</article>
+    /* SECTION HEADERS */
+    .sec-tag {
+      display: inline-flex; align-items: center; gap: .5rem;
+      font-family: var(--mono); font-size: .7rem; color: var(--cyan);
+      text-transform: uppercase; letter-spacing: 3px; margin-bottom: .6rem;
+    }
+    .sec-tag::before { content: ''; width: 28px; height: 1px; background: var(--cyan); }
+    .sec-title { font-size: clamp(1.8rem, 3.5vw, 2.8rem); font-weight: 800; letter-spacing: -1px; margin-bottom: .5rem; }
+    .sec-title .hl { color: var(--cyan); }
+    .sec-sub { color: var(--muted); max-width: 480px; margin-bottom: 3rem; font-size: .95rem; }
 
-								<!-- Project 2: OptiBOM -->
-								<article>
-									<header>
-										<span class="date">Full-Stack Development</span>
-										<h2><a href="optibom.html">OptiBOM<br />
-										Automation</a></h2>
-									</header>
-									<!-- FIXED IMAGE LINK HERE -->
-									<a href="optibom.html" class="image fit"><img src="https://drive.google.com/thumbnail?id=1I5PhdtGdvVi-_GY5KUlPzf_DXpnJo0-z&sz=w800" alt="OptiBOM" /></a>
-									<p>Architected a hybrid procurement tool (Node.js/Google Apps Script) integrating Digi-Key APIs to reduce manual BOM analysis time by over 90%.</p>
-									<ul class="actions special">
-										<li><a href="optibom.html" class="button">View Project</a></li>
-									</ul>
-								</article>
+    /* PROJECTS */
+    .proj-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 1.4rem;
+    }
+    .proj-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 18px; overflow: hidden;
+      display: flex; flex-direction: column;
+      transition: border-color .3s, transform .3s, box-shadow .3s;
+      position: relative;
+    }
+    .proj-card:hover {
+      border-color: var(--cyan);
+      transform: translateY(-7px);
+      box-shadow: 0 24px 50px rgba(0,0,0,.5), 0 0 30px rgba(0,229,255,.08);
+    }
+    .proj-card.featured { grid-column: 1 / -1; flex-direction: row; }
+    .proj-card.featured .proj-img { width: 48%; flex-shrink: 0; height: auto; }
+    .proj-card.featured .proj-body { padding: 2.5rem; }
+    .proj-img { height: 220px; overflow: hidden; position: relative; }
+    .proj-img img {
+      width: 100%; height: 100%; object-fit: cover;
+      filter: brightness(.8) saturate(1.15);
+      transition: transform .5s, filter .3s;
+    }
+    .proj-card:hover .proj-img img { transform: scale(1.06); filter: brightness(.9) saturate(1.3); }
+    .proj-img-shade {
+      position: absolute; inset: 0;
+      background: linear-gradient(to bottom, transparent 40%, rgba(7,9,15,.85));
+    }
+    .proj-body { padding: 1.5rem; display: flex; flex-direction: column; flex: 1; }
+    .tags { display: flex; flex-wrap: wrap; gap: .35rem; margin-bottom: .9rem; }
+    .tag {
+      font-family: var(--mono); font-size: .65rem;
+      padding: .22rem .58rem; border-radius: 100px;
+      font-weight: 600; letter-spacing: .5px; text-transform: uppercase;
+    }
+    .tc { background: rgba(0,229,255,.1); color: var(--cyan); border: 1px solid rgba(0,229,255,.2); }
+    .tp { background: rgba(168,85,247,.1); color: var(--purple); border: 1px solid rgba(168,85,247,.2); }
+    .to { background: rgba(249,115,22,.1); color: var(--orange); border: 1px solid rgba(249,115,22,.2); }
+    .tg { background: rgba(16,185,129,.1); color: var(--green); border: 1px solid rgba(16,185,129,.2); }
+    .proj-title {
+      font-size: 1.2rem; font-weight: 700;
+      line-height: 1.3; margin-bottom: .7rem;
+      transition: color .3s;
+    }
+    .proj-card:hover .proj-title { color: var(--cyan); }
+    .proj-desc { color: var(--muted); font-size: .88rem; line-height: 1.75; flex: 1; margin-bottom: 1.2rem; }
+    .proj-metric {
+      display: inline-flex; align-items: center; gap: .4rem;
+      background: rgba(0,229,255,.05); border: 1px solid rgba(0,229,255,.15);
+      border-radius: 6px; padding: .28rem .65rem;
+      font-family: var(--mono); font-size: .75rem;
+      color: var(--cyan); font-weight: 600; margin-bottom: 1rem;
+    }
+    .proj-foot {
+      display: flex; align-items: center; justify-content: space-between;
+      padding-top: .9rem; border-top: 1px solid var(--border);
+    }
+    .proj-link {
+      display: inline-flex; align-items: center; gap: .45rem;
+      color: var(--cyan); font-size: .83rem; font-weight: 600;
+      transition: gap .2s;
+    }
+    .proj-link:hover { gap: .75rem; }
+    .diff { display: flex; align-items: center; gap: .28rem; }
+    .diff-lbl { font-size: .65rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-right: .2rem; }
+    .dd { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,.08); }
+    .dd.on { background: var(--orange); }
 
-								<!-- Project 3: ETL CAN Hitch -->
-								<article>
-									<header>
-										<span class="date">Commercial Launch</span>
-										<h2><a href="ecrb_datasheet.html">ETL CAN Hitch<br />
-										Datasheet</a></h2>
-									</header>
-									<!-- FIXED IMAGE LINK HERE -->
-									<a href="ecrb_datasheet.html" class="image fit"><img src="https://drive.google.com/thumbnail?id=1qvg4v8J0nKFsNL8eiBpOLwArg9dKgDT9&sz=w800" alt="CAN Hitch" /></a>
-									<p>Authored the technical datasheet and performed electrical validation for a J1939 CAN Bridge, ensuring ±58V fault protection for commercial release.</p>
-									<ul class="actions special">
-										<li><a href="ecrb_datasheet.html" class="button">View Project</a></li>
-									</ul>
-								</article>
+    /* SKILLS */
+    #skills { background: linear-gradient(180deg, transparent, rgba(0,229,255,.02) 50%, transparent); }
+    .skills-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px,1fr)); gap: 1.8rem; }
+    .sk-cat {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 18px; padding: 1.7rem;
+      transition: border-color .3s;
+    }
+    .sk-cat:hover { border-color: rgba(0,229,255,.3); }
+    .sk-head { display: flex; align-items: center; gap: .7rem; margin-bottom: 1.5rem; }
+    .sk-ico {
+      width: 36px; height: 36px; border-radius: 9px;
+      display: flex; align-items: center; justify-content: center; font-size: .9rem;
+    }
+    .ic { background: rgba(0,229,255,.1); color: var(--cyan); }
+    .ip { background: rgba(168,85,247,.1); color: var(--purple); }
+    .io { background: rgba(249,115,22,.1); color: var(--orange); }
+    .ig { background: rgba(16,185,129,.1); color: var(--green); }
+    .sk-name { font-size: .9rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+    .sk-row { margin-bottom: .9rem; }
+    .sk-r { display: flex; justify-content: space-between; margin-bottom: .35rem; }
+    .sk-label { font-size: .82rem; }
+    .sk-pct { font-family: var(--mono); font-size: .72rem; color: var(--muted); }
+    .sk-bar { height: 5px; background: rgba(255,255,255,.05); border-radius: 3px; overflow: hidden; }
+    .sk-fill { height: 100%; border-radius: 3px; width: 0; transition: width 1.6s cubic-bezier(.25,1,.5,1); }
+    .fc { background: linear-gradient(90deg, var(--cyan), rgba(0,229,255,.5)); box-shadow: 0 0 8px var(--cyan-glow); }
+    .fp { background: linear-gradient(90deg, var(--purple), rgba(168,85,247,.5)); }
+    .fo { background: linear-gradient(90deg, var(--orange), rgba(249,115,22,.5)); }
+    .fg { background: linear-gradient(90deg, var(--green), rgba(16,185,129,.5)); }
 
-								<!-- Project 4: RescueTouch -->
-								<article>
-									<header>
-										<span class="date">Embedded Systems</span>
-										<h2><a href="rescue_touch.html">RescueTouch Emergency<br />
-										System</a></h2>
-									</header>
-									<a href="rescue_touch.html" class="image fit"><img src="https://m.media-amazon.com/images/I/61DX7isVBBL._UF894,1000_QL80_.jpg" alt="" /></a>
-									<p>Designed a two-board STM32 emergency system, handling KiCad schematics and C++ firmware to establish reliable UART communication.</p>
-									<ul class="actions special">
-										<li><a href="rescue_touch.html" class="button">View Project</a></li>
-									</ul>
-								</article>
+    /* EXPERIENCE TIMELINE */
+    .timeline { position: relative; padding-left: 1.8rem; }
+    .timeline::before {
+      content: ''; position: absolute; left: 0; top: .5rem; bottom: 0;
+      width: 2px; background: linear-gradient(180deg, var(--cyan), var(--purple) 60%, transparent);
+    }
+    .tl-item { position: relative; padding-left: 2.2rem; padding-bottom: 3rem; }
+    .tl-item::before {
+      content: ''; position: absolute; left: -2.3rem; top: .4rem;
+      width: 13px; height: 13px; border-radius: 50%;
+      background: var(--cyan); border: 3px solid var(--bg);
+      box-shadow: 0 0 0 2px var(--cyan), 0 0 16px var(--cyan-glow);
+    }
+    .tl-head { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: .5rem; margin-bottom: .6rem; }
+    .tl-co { font-size: 1.05rem; font-weight: 700; }
+    .tl-date {
+      font-family: var(--mono); font-size: .75rem; color: var(--cyan);
+      background: rgba(0,229,255,.07); padding: .28rem .65rem;
+      border-radius: 6px; border: 1px solid rgba(0,229,255,.2);
+    }
+    .tl-role { font-size: .88rem; color: var(--purple); font-weight: 600; margin-bottom: .9rem; }
+    .tl-list { list-style: none; display: flex; flex-direction: column; gap: .55rem; }
+    .tl-list li {
+      display: flex; align-items: flex-start; gap: .55rem;
+      color: var(--muted); font-size: .88rem; line-height: 1.65;
+    }
+    .tl-list li::before { content: '▸'; color: var(--cyan); flex-shrink: 0; margin-top: .05em; }
+    .tl-list strong { color: var(--text); }
 
-								<!-- Project 5: Solar Board -->
-								<article>
-									<header>
-										<span class="date">PCB Assembly</span>
-										<h2><a href="solar_board.html">Solar Cell Board<br />
-										Assembly</a></h2>
-									</header>
-									<a href="solar_board.html" class="image fit"><img src="https://nanoavionics.com/wp-content/uploads/2025/04/nanoavionics-smallsat-small-satellite-microsatellite-aluminium-honeycomb-carbon-fiber-double-deployable-solar-panels.jpg" alt="" /></a>
-									<p>Executed the manual assembly and soldering of a solar power PCB, validating physical performance metrics against LTspice simulation models.</p>
-									<ul class="actions special">
-										<li><a href="solar_board.html" class="button">View Project</a></li>
-									</ul>
-								</article>
+    /* CONTACT */
+    #contact { border-top: 1px solid var(--border); }
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+    .con-title { font-size: 2.4rem; font-weight: 800; margin-bottom: 1rem; }
+    .con-title span { color: var(--cyan); }
+    .con-p { color: var(--muted); line-height: 1.85; margin-bottom: 1.6rem; font-size: .95rem; }
+    .con-items { display: flex; flex-direction: column; gap: .9rem; }
+    .con-item { display: flex; align-items: center; gap: .9rem; }
+    .con-ico {
+      width: 40px; height: 40px; background: rgba(0,229,255,.07);
+      border: 1px solid var(--border); border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--cyan); font-size: .85rem; flex-shrink: 0;
+    }
+    .con-item a, .con-item span { font-size: .92rem; color: var(--text); transition: color .2s; }
+    .con-item a:hover { color: var(--cyan); }
+    .socials { display: flex; gap: .85rem; margin-top: 2rem; }
+    .soc-btn {
+      width: 46px; height: 46px; background: var(--surface);
+      border: 1px solid var(--border); border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; color: var(--muted);
+      transition: all .3s;
+    }
+    .soc-btn:hover { border-color: var(--cyan); color: var(--cyan); box-shadow: 0 0 18px var(--cyan-glow); transform: translateY(-3px); }
+    .con-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 20px; padding: 2.4rem;
+    }
+    .con-card h3 { font-size: 1.25rem; font-weight: 700; margin-bottom: .5rem; }
+    .con-card p { color: var(--muted); font-size: .88rem; margin-bottom: 1.8rem; }
+    .edu-meta { color: var(--cyan); font-size: .85rem; font-weight: 600; margin-bottom: .3rem; }
+    .edu-date { color: var(--muted); font-size: .82rem; margin-bottom: 1.8rem; }
+    .chip-grid { display: flex; flex-wrap: wrap; gap: .4rem; }
 
-								<!-- Project 6: Cube Manual -->
-								<article>
-									<header>
-										<span class="date">Technical Communication</span>
-										<h2><a href="cube_manual.html">Snake Cube Puzzle<br />
-										3x3 Manual</a></h2>
-									</header>
-									<a href="cube_manual.html" class="image fit"><img src="https://www.mastermindtoys.com/cdn/shop/files/110315_1_1200x.jpg?v=1742530275" alt="" /></a>
-									<p>Designed a user-friendly visual manual for the 3x3 snake cube puzzle, focusing on clear technical communication and diagrammatic instructions.</p>
-									<ul class="actions special">
-										<li><a href="cube_manual.html" class="button">View Project</a></li>
-									</ul>
-								</article>
+    /* FOOTER */
+    .foot {
+      text-align: center; padding: 1.8rem;
+      color: var(--muted); font-size: .78rem;
+      border-top: 1px solid var(--border);
+    }
+    .foot span { color: var(--cyan); }
 
-							</section> 
-					</div>
+    /* REVEAL */
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity .7s ease, transform .7s ease; }
+    .reveal.up { opacity: 1; transform: translateY(0); }
 
-				<!-- Footer -->
-					<footer id="footer">
-						<section class="split contact">
-							<section class="field">
-								<h3>Address</h3>
-								<p>Toronto, Ontario, Canada</p>
-							</section>
-							<section>
-								<h3>Phone</h3>
-								<p><a href="#">(647) 513-6816</a></p>
-							</section>
-							<section>
-								<h3>Email</h3>
-								<p><a href="mailto:kaviyan.n.jeyakumar@gmail.com">kaviyan.n.jeyakumar@gmail.com</a></p>
-							</section>
-							<section>
-								<h3>Social</h3>
-								<ul class="icons alt">
-									<li><a href="https://www.linkedin.com/in/kaviyan-jeyakumar-606091318/" class="icon brands alt fa-linkedin" target="_blank"><span class="label">LinkedIn</span></a></li>
-									<li><a href="https://github.com/KaviyanJ" class="icon brands alt fa-github" target="_blank"><span class="label">GitHub</span></a></li>
-								</ul>
-							</section>
-						</section>
-					</footer>
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      #topnav { padding: .9rem 1.2rem; }
+      .nav-links { display: none; }
+      .proj-card.featured { flex-direction: column; }
+      .proj-card.featured .proj-img { width: 100%; height: 220px; }
+      .contact-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .hero-stats { gap: .8rem; }
+      .wrap { padding: 4rem 1.2rem; }
+    }
+  </style>
+</head>
+<body>
 
-				<!-- Copyright -->
-					<div id="copyright">
-						<ul><li>&copy; Kaviyan Jeyakumar</li><li>Design: HTML5 UP</li></ul>
-					</div>
+<!-- CURSOR -->
+<div id="cur-ring"></div>
+<div id="cur-dot"></div>
 
-			</div>
+<!-- CIRCUIT BACKGROUND -->
+<svg id="c-circuit" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <pattern id="circ" x="0" y="0" width="120" height="120" patternUnits="userSpaceOnUse">
+      <path d="M0 60 L30 60 L30 20 L80 20 L80 60 L120 60" stroke="#00e5ff" stroke-width=".6" fill="none"/>
+      <path d="M60 0 L60 30 L90 30 L90 90 L60 90 L60 120" stroke="#00e5ff" stroke-width=".6" fill="none"/>
+      <path d="M20 90 L50 90 L50 110" stroke="#00e5ff" stroke-width=".4" fill="none"/>
+      <circle cx="30" cy="60" r="2.5" fill="none" stroke="#00e5ff" stroke-width=".6"/>
+      <circle cx="80" cy="20" r="2.5" fill="none" stroke="#00e5ff" stroke-width=".6"/>
+      <circle cx="60" cy="30" r="2.5" fill="none" stroke="#00e5ff" stroke-width=".6"/>
+      <circle cx="90" cy="90" r="2.5" fill="none" stroke="#00e5ff" stroke-width=".6"/>
+      <rect x="75" y="55" width="10" height="10" stroke="#00e5ff" stroke-width=".5" fill="none"/>
+      <rect x="55" y="85" width="10" height="10" stroke="#00e5ff" stroke-width=".5" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#circ)"/>
+</svg>
+<canvas id="c-particles"></canvas>
 
-		<!-- Scripts -->
-			<script src="assets/js/jquery.min.js"></script>
-			<script src="assets/js/jquery.scrollex.min.js"></script>
-			<script src="assets/js/jquery.scrolly.min.js"></script>
-			<script src="assets/js/browser.min.js"></script>
-			<script src="assets/js/breakpoints.min.js"></script>
-			<script src="assets/js/util.js"></script>
-			<script src="assets/js/main.js"></script>
+<!-- NAV -->
+<nav id="topnav">
+  <div class="nav-logo">[KJ]<em> // portfolio</em></div>
+  <ul class="nav-links">
+    <li><a href="index.html" class="active">Projects</a></li>
+    <li><a href="aboutme.html">About Me</a></li>
+  </ul>
+  <ul class="nav-icons">
+    <li><a href="https://www.linkedin.com/in/kaviyan-jeyakumar-606091318/" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a></li>
+    <li><a href="https://github.com/KaviyanJ" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a></li>
+  </ul>
+</nav>
 
-	</body>
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-inner">
+    <div class="hero-badge">Seeking Spring 2026 Internship</div>
+    <h1 class="hero-name">
+      <span class="fn">KAVIYAN&nbsp;</span><span class="ln">JEYAKUMAR</span>
+    </h1>
+    <p class="hero-sub">
+      <span class="typed"></span><span class="blink">_</span>
+    </p>
+    <p class="hero-desc">
+      Electrical Engineering student at the University of Waterloo — driving projects through the full hardware development cycle, from LTSpice simulation to Altium PCB layout, embedded firmware, and hands-on validation.
+    </p>
+    <div class="hero-stats">
+      <div class="stat-pill"><div class="stat-num" data-target="84.8">0</div><div class="stat-lbl">% Power Efficiency</div></div>
+      <div class="stat-pill"><div class="stat-num" data-target="90">0</div><div class="stat-lbl">% BOM Time Saved</div></div>
+      <div class="stat-pill"><div class="stat-num" data-target="100">0</div><div class="stat-lbl">% Tests Automated</div></div>
+      <div class="stat-pill"><div class="stat-num" data-target="58">0</div><div class="stat-lbl">V Fault Protection</div></div>
+    </div>
+    <div class="hero-btns">
+      <a href="#projects" class="btn-p">View Projects</a>
+      <a href="aboutme.html" class="btn-s">About Me</a>
+    </div>
+  </div>
+  <div class="scroll-hint">
+    <span>Scroll</span>
+    <i class="fas fa-chevron-down"></i>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="wrap">
+    <div class="sec-tag"><i class="fas fa-microchip"></i> Projects</div>
+    <h2 class="sec-title">What I've <span class="hl">Built</span></h2>
+    <p class="sec-sub">From concept to validated hardware — real projects with measurable outcomes.</p>
+    <div class="proj-grid">
+
+      <!-- FEATURED -->
+      <article class="proj-card featured reveal">
+        <div class="proj-img">
+          <img src="https://drive.google.com/thumbnail?id=1wKanGJe3JNhrho25JFkWqPenoO8fvS0U&sz=w1200" alt="Bed of Nails V3">
+          <div class="proj-img-shade"></div>
+        </div>
+        <div class="proj-body">
+          <div class="tags">
+            <span class="tag tc">PCB Design</span>
+            <span class="tag tp">Altium</span>
+            <span class="tag to">Python</span>
+            <span class="tag tg">LTSpice</span>
+          </div>
+          <h3 class="proj-title">Bed of Nails V3 — Test Fixture</h3>
+          <p class="proj-desc">Spearheaded the full hardware lifecycle of a 2-layer test fixture at Electrans Technology. Progressed from LTSpice simulation and breadboard prototyping to Altium layout. Engineered a custom window comparator and Python validation scripts to automate 100% of termination checks — zero defects in shipped hardware.</p>
+          <div><span class="proj-metric"><i class="fas fa-bolt"></i> 100% termination checks automated</span></div>
+          <div class="proj-foot">
+            <a href="bed_of_nail.html" class="proj-link">View Project <i class="fas fa-arrow-right"></i></a>
+            <div class="diff">
+              <span class="diff-lbl">Complexity</span>
+              <div class="dd on"></div><div class="dd on"></div><div class="dd on"></div><div class="dd on"></div><div class="dd"></div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- BUCK CONVERTER -->
+      <article class="proj-card reveal">
+        <div class="proj-img">
+          <img src="https://www.analog.com/en/_/media/analog/en/evaluation-board-images/images/dc1895a-4.gif" alt="Buck Converter">
+          <div class="proj-img-shade"></div>
+        </div>
+        <div class="proj-body">
+          <div class="tags">
+            <span class="tag tg">LTSpice</span>
+            <span class="tag tc">Power Electronics</span>
+          </div>
+          <h3 class="proj-title">Buck Converter Simulation</h3>
+          <p class="proj-desc">High-fidelity LTSpice digital twin validating power efficiency, transient response, and stability. Achieved 84.8% power conversion efficiency with only 33mV (1%) voltage undershoot and ~20µs settling time under heavy load.</p>
+          <div><span class="proj-metric"><i class="fas fa-chart-line"></i> 84.8% power conversion efficiency</span></div>
+          <div class="proj-foot">
+            <a href="buck_converter.html" class="proj-link">View Project <i class="fas fa-arrow-right"></i></a>
+            <div class="diff">
+              <span class="diff-lbl">Complexity</span>
+              <div class="dd on"></div><div class="dd on"></div><div class="dd on"></div><div class="dd"></div><div class="dd"></div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- OPTIBOM -->
+      <article class="proj-card reveal">
+        <div class="proj-img">
+          <img src="https://drive.google.com/thumbnail?id=1I5PhdtGdvVi-_GY5KUlPzf_DXpnJo0-z&sz=w800" alt="OptiBOM">
+          <div class="proj-img-shade"></div>
+        </div>
+        <div class="proj-body">
+          <div class="tags">
+            <span class="tag to">Node.js</span>
+            <span class="tag tp">REST API</span>
+            <span class="tag tc">Full-Stack</span>
+          </div>
+          <h3 class="proj-title">OptiBOM Automation</h3>
+          <p class="proj-desc">Hybrid procurement tool integrating Digi-Key/Mouser APIs via Node.js and Google Apps Script. Automates stock validation and EOL detection — cut manual BOM analysis time by 90%+ across production workflows.</p>
+          <div><span class="proj-metric"><i class="fas fa-clock"></i> 90%+ manual time eliminated</span></div>
+          <div class="proj-foot">
+            <a href="optibom.html" class="proj-link">View Project <i class="fas fa-arrow-right"></i></a>
+            <div class="diff">
+              <span class="diff-lbl">Complexity</span>
+              <div class="dd on"></div><div class="dd on"></div><div class="dd on"></div><div class="dd on"></div><div class="dd"></div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- ETL CAN HITCH -->
+      <article class="proj-card reveal">
+        <div class="proj-img">
+          <img src="https://drive.google.com/thumbnail?id=1qvg4v8J0nKFsNL8eiBpOLwArg9dKgDT9&sz=w800" alt="ETL CAN Hitch">
+          <div class="proj-img-shade"></div>
+        </div>
+        <div class="proj-body">
+          <div class="tags">
+            <span class="tag tc">CAN / J1939</span>
+            <span class="tag tp">Hardware Validation</span>
+          </div>
+          <h3 class="proj-title">ETL CAN Hitch — Datasheet</h3>
+          <p class="proj-desc">Authored the technical datasheet and performed electrical validation for a J1939 CAN Bridge now retailed on DigiKey. Verified ±58V fault protection specs, enabling commercial customer integration.</p>
+          <div><span class="proj-metric"><i class="fas fa-shield-alt"></i> ±58V fault protection verified</span></div>
+          <div class="proj-foot">
+            <a href="ecrb_datasheet.html" class="proj-link">View Project <i class="fas fa-arrow-right"></i></a>
+            <div class="diff">
+              <span class="diff-lbl">Complexity</span>
+              <div class="dd on"></div><div class="dd on"></div><div class="dd on"></div><div class="dd"></div><div class="dd"></div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- RESCUETOUCH -->
+      <article class="proj-card reveal">
+        <div class="proj-img">
+          <img src="https://m.media-amazon.com/images/I/61DX7isVBBL._UF894,1000_QL80_.jpg" alt="RescueTouch">
+          <div class="proj-img-shade"></div>
+        </div>
+        <div class="proj-body">
+          <div class="tags">
+            <span class="tag to">STM32</span>
+            <span class="tag tc">Embedded C++</span>
+            <span class="tag tp">UART</span>
+          </div>
+          <h3 class="proj-title">RescueTouch Emergency System</h3>
+          <p class="proj-desc">Two-board STM32 emergency communication system with KiCad schematics and C++ firmware. Established reliable UART communication between boards for critical emergency signalling scenarios.</p>
+          <div class="proj-foot">
+            <a href="rescue_touch.html" class="proj-link">View Project <i class="fas fa-arrow-right"></i></a>
+            <div class="diff">
+              <span class="diff-lbl">Complexity</span>
+              <div class="dd on"></div><div class="dd on"></div><div class="dd on"></div><div class="dd"></div><div class="dd"></div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- SOLAR BOARD -->
+      <article class="proj-card reveal">
+        <div class="proj-img">
+          <img src="https://nanoavionics.com/wp-content/uploads/2025/04/nanoavionics-smallsat-small-satellite-microsatellite-aluminium-honeycomb-carbon-fiber-double-deployable-solar-panels.jpg" alt="Solar Board">
+          <div class="proj-img-shade"></div>
+        </div>
+        <div class="proj-body">
+          <div class="tags">
+            <span class="tag tg">PCB Assembly</span>
+            <span class="tag tc">CubeSat</span>
+          </div>
+          <h3 class="proj-title">Solar Cell Board Assembly</h3>
+          <p class="proj-desc">Manual assembly and soldering of a solar power PCB for the Orbital CubeSat team. Validated physical performance metrics against LTSpice simulation models through hardware-in-the-loop testing.</p>
+          <div class="proj-foot">
+            <a href="solar_board.html" class="proj-link">View Project <i class="fas fa-arrow-right"></i></a>
+            <div class="diff">
+              <span class="diff-lbl">Complexity</span>
+              <div class="dd on"></div><div class="dd on"></div><div class="dd"></div><div class="dd"></div><div class="dd"></div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- SNAKE CUBE -->
+      <article class="proj-card reveal">
+        <div class="proj-img">
+          <img src="https://www.mastermindtoys.com/cdn/shop/files/110315_1_1200x.jpg?v=1742530275" alt="Snake Cube Manual">
+          <div class="proj-img-shade"></div>
+        </div>
+        <div class="proj-body">
+          <div class="tags">
+            <span class="tag tp">Technical Docs</span>
+            <span class="tag to">Visual Design</span>
+          </div>
+          <h3 class="proj-title">Snake Cube Puzzle Manual</h3>
+          <p class="proj-desc">User-friendly visual manual for the 3x3 snake cube puzzle. Focused on clear technical communication with step-by-step diagrammatic instructions — designed for a general, non-technical audience.</p>
+          <div class="proj-foot">
+            <a href="cube_manual.html" class="proj-link">View Project <i class="fas fa-arrow-right"></i></a>
+            <div class="diff">
+              <span class="diff-lbl">Complexity</span>
+              <div class="dd on"></div><div class="dd on"></div><div class="dd"></div><div class="dd"></div><div class="dd"></div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="wrap">
+    <div class="sec-tag"><i class="fas fa-code"></i> Skills</div>
+    <h2 class="sec-title">Technical <span class="hl">Arsenal</span></h2>
+    <p class="sec-sub">Tools, languages, and protocols across the full hardware stack.</p>
+    <div class="skills-grid">
+
+      <div class="sk-cat reveal">
+        <div class="sk-head"><div class="sk-ico ic"><i class="fas fa-drafting-compass"></i></div><span class="sk-name">Hardware & Design</span></div>
+        <div class="sk-row"><div class="sk-r"><span class="sk-label">LTSpice</span><span class="sk-pct">92%</span></div><div class="sk-bar"><div class="sk-fill fc" data-w="92"></div></div></div>
+        <div class="sk-row"><div class="sk-r"><span class="sk-label">Altium Designer</span><span class="sk-pct">88%</span></div><div class="sk-bar"><div class="sk-fill fc" data-w="88"></div></div></div>
+        <div class="sk-row"><div class="sk-r"><span class="sk-label">KiCad</span><span class="sk-pct">75%</span></div><div class="sk-bar"><div class="sk-fill fc" data-w="75"></div></div></div>
+        <div class="sk-row"><div class="sk-r"><span class="sk-label">COMSOL Multiphysics</span><span class="sk-pct">65%</span></div><div class="sk-bar"><div class="sk-fill fc" data-w="65"></div></div></div>
+      </div>
+
+      <div class="sk-cat reveal">
+        <div class="sk-head"><div class="sk-ico ip"><i class="fas fa-terminal"></i></div><span class="sk-name">Programming</span></div>
+        <div class="sk-row"><div class="sk-r"><span class="sk-label">Python</span><span class="sk-pct">88%</span></div><div class="sk-bar"><div class="sk-fill fp" data-w="88"></div></div></div>
+        <div class="sk-row"><div class="sk-r"><span class="sk-label">C++</span><span class="sk-pct">82%</span></div><div class="sk-bar"><div class="sk-fill fp" data-w="82"></div></div></div>
+        <div class="sk-row"><div class="sk-r"><span class="sk-label">JavaScript / Node.js</span><span class="sk-pct">78%</span></div><div class="sk-bar"><div class="sk-fill fp" data-w="78"></div></div></div>
+        <div class="sk-row"><div class="sk-r"><span class="sk-label">C# / Google Apps Script</span><span class="sk-pct">70%</span></div><div class="sk-bar"><div class="sk-fill fp" data-w="70"></div></div></div>
+      </div>
+
+      <div class="sk-cat reveal">
+        <div class="sk-head"><div class="sk-ico io"><i class="fas fa-network-wired"></i></div><span class="sk-name">Protocols</span></div>
+        <div class="sk-row"><div class="sk-r"><span class="sk-label">UART / I2C / SPI</span><span class="sk-pct">85%</span></div><div class="sk-bar"><div class="sk-fill fo" data-w="85"></div></div></div>
+        <div class="sk-row"><div class="sk-r"><span class="sk-label">CAN / J1939</span><span class="sk-pct">80%</span></div><div class="sk-bar"><div class="sk-fill fo" data-w="80"></div></div></div>
+        <div class="sk-row"><div class="sk-r"><span class="sk-label">REST API / OAuth 2.0</span><span class="sk-pct">78%</span></div><div class="sk-bar"><div class="sk-fill fo" data-w="78"></div></div></div>
+      </div>
+
+      <div class="sk-cat reveal">
+        <div class="sk-head"><div class="sk-ico ig"><i class="fas fa-flask"></i></div><span class="sk-name">Lab & Tools</span></div>
+        <div class="sk-row"><div class="sk-r"><span class="sk-label">PCB Layout & Soldering</span><span class="sk-pct">90%</span></div><div class="sk-bar"><div class="sk-fill fg" data-w="90"></div></div></div>
+        <div class="sk-row"><div class="sk-r"><span class="sk-label">Oscilloscopes / Logic Analyzers</span><span class="sk-pct">85%</span></div><div class="sk-bar"><div class="sk-fill fg" data-w="85"></div></div></div>
+        <div class="sk-row"><div class="sk-r"><span class="sk-label">Git / Postman</span><span class="sk-pct">80%</span></div><div class="sk-bar"><div class="sk-fill fg" data-w="80"></div></div></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="wrap">
+    <div class="sec-tag"><i class="fas fa-briefcase"></i> Experience</div>
+    <h2 class="sec-title">Where I've <span class="hl">Worked</span></h2>
+    <p class="sec-sub">Real engineering experience on shipped, commercial hardware.</p>
+    <div class="timeline">
+
+      <div class="tl-item reveal">
+        <div class="tl-head">
+          <div><div class="tl-co">Electrans Technology</div><div class="tl-role">Electrical Engineering Intern — Oakville, ON</div></div>
+          <span class="tl-date">Sep 2025 – Dec 2025</span>
+        </div>
+        <ul class="tl-list">
+          <li><strong>ETL CAN Hitch:</strong> Executed electrical validation and authored technical datasheet for a J1939 CAN Bridge now retailed on DigiKey; verified ±58V fault protection.</li>
+          <li><strong>TCU V2.1 Power Optimization:</strong> Replaced LDOs with LTC3115-1 Buck-Boost converters — achieved <strong>90.2% reduction in heat dissipation</strong> (4.8W → 0.47W), resolving critical thermal shutdowns.</li>
+          <li><strong>Bed of Nails V3:</strong> Full hardware lifecycle — LTSpice → breadboard → Altium → Python validation. Custom window comparator automated 100% of termination checks.</li>
+          <li><strong>Cab Sentry:</strong> Architected redundant infrared safety interlock for autonomous tractors; executed DFMEA identifying high-risk failure modes with hardware watchdog mitigations.</li>
+          <li><strong>OptiBOM:</strong> Built Node.js/Google Apps Script procurement tool integrating Digi-Key/Mouser APIs — <strong>90%+ reduction</strong> in manual BOM analysis time.</li>
+        </ul>
+      </div>
+
+      <div class="tl-item reveal">
+        <div class="tl-head">
+          <div><div class="tl-co">Orbital CubeSat Team — UWaterloo</div><div class="tl-role">Electrical Team Member</div></div>
+          <span class="tl-date">Sep 2024 – Present</span>
+        </div>
+        <ul class="tl-list">
+          <li>Developed high-fidelity LTSpice digital twin of a buck converter — validated at <strong>84.8% power conversion efficiency</strong> under 1.5A load.</li>
+          <li>Quantified feedback loop transient response: <strong>33mV (1%) voltage undershoot</strong> and ~20µs settling time under heavy load step.</li>
+          <li>Populated and tested solar cell power PCB, validating key performance metrics against simulation models.</li>
+        </ul>
+      </div>
+
+      <div class="tl-item reveal">
+        <div class="tl-head">
+          <div><div class="tl-co">The STEAM Project</div><div class="tl-role">Camp Instructor & Technician — Richmond Hill, ON</div></div>
+          <span class="tl-date">Dec 2022 – Sep 2023</span>
+        </div>
+        <ul class="tl-list">
+          <li>Led robotics, electronics, and design workshops for students aged 8–14 — supported <strong>120+ campers</strong> across multiple sessions.</li>
+          <li>Maintained lab equipment, soldered demo boards, and debugged student circuits.</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="wrap">
+    <div class="contact-grid">
+      <div class="reveal">
+        <div class="sec-tag"><i class="fas fa-satellite-dish"></i> Contact</div>
+        <h2 class="con-title">Let's <span>Connect</span></h2>
+        <p class="con-p">I'm actively seeking a Spring 2026 internship in hardware development, embedded systems, or electrical engineering. Let's build something great together.</p>
+        <div class="con-items">
+          <div class="con-item"><div class="con-ico"><i class="fas fa-map-marker-alt"></i></div><span>Toronto, Ontario, Canada</span></div>
+          <div class="con-item"><div class="con-ico"><i class="fas fa-phone"></i></div><a href="tel:6475136816">(647) 513-6816</a></div>
+          <div class="con-item"><div class="con-ico"><i class="fas fa-envelope"></i></div><a href="mailto:kaviyan.n.jeyakumar@gmail.com">kaviyan.n.jeyakumar@gmail.com</a></div>
+        </div>
+        <div class="socials">
+          <a href="https://www.linkedin.com/in/kaviyan-jeyakumar-606091318/" class="soc-btn" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+          <a href="https://github.com/KaviyanJ" class="soc-btn" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
+        </div>
+      </div>
+      <div class="con-card reveal">
+        <div class="sec-tag"><i class="fas fa-graduation-cap"></i> Education</div>
+        <h3>University of Waterloo</h3>
+        <p>Bachelor of Applied Science</p>
+        <div class="edu-meta">Electrical Engineering</div>
+        <div class="edu-date">Sept 2024 – June 2029 (Expected)</div>
+        <div class="chip-grid">
+          <span class="tag tc">LTSpice</span>
+          <span class="tag tp">Altium</span>
+          <span class="tag to">STM32</span>
+          <span class="tag tg">PCB Design</span>
+          <span class="tag tc">Python</span>
+          <span class="tag tp">C++</span>
+          <span class="tag to">CAN/J1939</span>
+          <span class="tag tg">UART/SPI/I2C</span>
+          <span class="tag tc">Node.js</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="foot">
+  <p>Designed & Built by <span>Kaviyan Jeyakumar</span> · Waterloo Electrical Engineering '29</p>
+</div>
+
+<script>
+// === CURSOR ===
+const ring = document.getElementById('cur-ring');
+const dot = document.getElementById('cur-dot');
+const TRAIL = 10;
+const trails = Array.from({length: TRAIL}, (_, i) => {
+  const el = document.createElement('div');
+  el.className = 'cur-trail';
+  const s = Math.max(1.5, 4 - i * 0.25);
+  el.style.cssText = `width:${s}px;height:${s}px;opacity:${(1 - i/TRAIL)*0.35}`;
+  document.body.appendChild(el);
+  return {el, x: 0, y: 0};
+});
+
+let mx = 0, my = 0, rx = 0, ry = 0;
+document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+document.querySelectorAll('a,button,.proj-card,.sk-cat,.stat-pill').forEach(el => {
+  el.addEventListener('mouseenter', () => document.body.classList.add('cur-hover'));
+  el.addEventListener('mouseleave', () => document.body.classList.remove('cur-hover'));
+});
+(function animCursor() {
+  dot.style.left = mx + 'px'; dot.style.top = my + 'px';
+  rx += (mx - rx) * 0.1; ry += (my - ry) * 0.1;
+  ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+  for (let i = TRAIL - 1; i > 0; i--) {
+    trails[i].x += (trails[i-1].x - trails[i].x) * 0.28;
+    trails[i].y += (trails[i-1].y - trails[i].y) * 0.28;
+    trails[i].el.style.left = trails[i].x + 'px';
+    trails[i].el.style.top = trails[i].y + 'px';
+  }
+  trails[0].x += (mx - trails[0].x) * 0.5;
+  trails[0].y += (my - trails[0].y) * 0.5;
+  trails[0].el.style.left = trails[0].x + 'px';
+  trails[0].el.style.top = trails[0].y + 'px';
+  requestAnimationFrame(animCursor);
+})();
+
+// === PARTICLES ===
+const cvs = document.getElementById('c-particles');
+const ctx = cvs.getContext('2d');
+const resize = () => { cvs.width = innerWidth; cvs.height = innerHeight; };
+resize(); window.addEventListener('resize', resize);
+
+class P {
+  constructor() { this.reset(); }
+  reset() {
+    this.x = Math.random() * cvs.width; this.y = Math.random() * cvs.height;
+    this.r = Math.random() * 1.4 + 0.4;
+    this.vx = (Math.random() - 0.5) * 0.25; this.vy = (Math.random() - 0.5) * 0.25;
+    this.a = Math.random() * 0.35 + 0.08;
+    this.c = Math.random() > 0.55 ? '#00e5ff' : Math.random() > 0.5 ? '#a855f7' : '#ffffff';
+  }
+  step() {
+    this.x += this.vx; this.y += this.vy;
+    if (this.x < 0 || this.x > cvs.width || this.y < 0 || this.y > cvs.height) this.reset();
+  }
+  draw() {
+    ctx.beginPath(); ctx.arc(this.x, this.y, this.r, 0, Math.PI*2);
+    ctx.fillStyle = this.c; ctx.globalAlpha = this.a; ctx.fill(); ctx.globalAlpha = 1;
+  }
+}
+const pts = Array.from({length: 130}, () => new P());
+(function animP() {
+  ctx.clearRect(0, 0, cvs.width, cvs.height);
+  pts.forEach(p => { p.step(); p.draw(); });
+  pts.forEach((p, i) => {
+    pts.slice(i+1, i+6).forEach(q => {
+      const d = Math.hypot(p.x-q.x, p.y-q.y);
+      if (d < 110) {
+        ctx.beginPath(); ctx.moveTo(p.x,p.y); ctx.lineTo(q.x,q.y);
+        ctx.strokeStyle = '#00e5ff'; ctx.globalAlpha = (1-d/110)*0.07;
+        ctx.lineWidth = 0.5; ctx.stroke(); ctx.globalAlpha = 1;
+      }
+    });
+  });
+  requestAnimationFrame(animP);
+})();
+
+// === TYPEWRITER ===
+const phrases = ['Electrical Engineer', 'PCB Designer', 'Embedded Systems Dev', "UWaterloo EE '29", 'Hardware Builder'];
+let pi = 0, ci = 0, del = false;
+const typedEl = document.querySelector('.typed');
+(function type() {
+  const cur = phrases[pi];
+  typedEl.textContent = del ? cur.slice(0, ci-1) : cur.slice(0, ci+1);
+  del ? ci-- : ci++;
+  if (!del && ci === cur.length) { del = true; setTimeout(type, 2200); return; }
+  if (del && ci === 0) { del = false; pi = (pi+1) % phrases.length; }
+  setTimeout(type, del ? 55 : 95);
+})();
+
+// === COUNTER ANIMATION ===
+function countUp(el) {
+  const target = parseFloat(el.dataset.target);
+  const dur = 2000, t0 = performance.now();
+  (function tick(now) {
+    const p = Math.min((now - t0) / dur, 1);
+    const e = 1 - Math.pow(1-p, 3);
+    el.textContent = target % 1 !== 0 ? (target*e).toFixed(1) : Math.floor(target*e);
+    if (p < 1) requestAnimationFrame(tick);
+    else el.textContent = target % 1 !== 0 ? target.toFixed(1) : target;
+  })(t0);
+}
+
+// === SCROLL REVEAL + SKILL BARS ===
+let statsRun = false;
+const revEls = document.querySelectorAll('.reveal');
+const statEls = document.querySelectorAll('.stat-num');
+function onScroll() {
+  revEls.forEach(el => {
+    if (el.getBoundingClientRect().top < innerHeight * 0.9) el.classList.add('up');
+  });
+  if (!statsRun && document.getElementById('hero').getBoundingClientRect().top < innerHeight) {
+    statsRun = true; statEls.forEach(countUp);
+  }
+  document.querySelectorAll('.sk-fill').forEach(b => {
+    const cat = b.closest('.sk-cat');
+    if (cat && cat.getBoundingClientRect().top < innerHeight * 0.9 && !b.dataset.done) {
+      b.dataset.done = '1'; b.style.width = b.dataset.w + '%';
+    }
+  });
+}
+window.addEventListener('scroll', onScroll, {passive: true});
+window.addEventListener('load', () => { onScroll(); setTimeout(onScroll, 400); });
+onScroll();
+
+// === NAV HIGHLIGHT ON SCROLL ===
+const sections = ['projects','skills','experience','contact'];
+window.addEventListener('scroll', () => {
+  const y = scrollY + 120;
+  sections.forEach(id => {
+    const sec = document.getElementById(id);
+    if (!sec) return;
+  });
+}, {passive: true});
+</script>
+</body>
 </html>

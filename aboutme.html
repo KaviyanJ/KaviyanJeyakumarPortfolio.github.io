@@ -1,105 +1,318 @@
-<!DOCTYPE HTML>
-<!--
-	Massively by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
-<html>
-	<head>
-		<title>About Me - Kaviyan Jeyakumar</title>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<link rel="stylesheet" href="assets/css/main.css" />
-		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
-	</head>
-	<body class="is-preload">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Me — Kaviyan Jeyakumar</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    :root {
+      --bg: #07090f; --surface: #0d1117; --card: #111827;
+      --border: rgba(0,229,255,.12); --border-h: rgba(0,229,255,.4);
+      --cyan: #00e5ff; --cyan-glow: rgba(0,229,255,.25);
+      --purple: #a855f7; --orange: #f97316; --green: #10b981;
+      --text: #e2e8f0; --muted: #64748b;
+      --font: 'Inter', system-ui, sans-serif;
+      --mono: 'JetBrains Mono', monospace;
+    }
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{background:var(--bg);color:var(--text);font-family:var(--font);line-height:1.6;cursor:none;overflow-x:hidden}
+    a{color:inherit;text-decoration:none}
 
-		<!-- Wrapper -->
-			<div id="wrapper">
+    #cur-ring{position:fixed;width:38px;height:38px;border:1.5px solid var(--cyan);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .2s,height .2s,background .2s}
+    #cur-dot{position:fixed;width:6px;height:6px;background:var(--cyan);border-radius:50%;pointer-events:none;z-index:10000;transform:translate(-50%,-50%);box-shadow:0 0 8px var(--cyan),0 0 20px var(--cyan)}
+    .cur-trail{position:fixed;border-radius:50%;pointer-events:none;z-index:9997;transform:translate(-50%,-50%);background:var(--cyan)}
+    body.cur-hover #cur-ring{width:54px;height:54px;background:rgba(0,229,255,.07)}
+    ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--surface)}::-webkit-scrollbar-thumb{background:var(--cyan);border-radius:3px}
 
-				<!-- Header -->
-					<header id="header">
-						<a href="index.html" class="logo">Portfolio</a>
-					</header>
+    #c-circuit{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.05}
+    #c-particles{position:fixed;inset:0;z-index:0;pointer-events:none}
 
-				<!-- Nav -->
-					<nav id="nav">
-						<ul class="links">
-							<li><a href="index.html">Projects</a></li>
-							<li class="active"><a href="aboutme.html">About Me</a></li>
-						</ul>
-						<ul class="icons">
-							<li><a href="https://www.linkedin.com/in/kaviyan-jeyakumar-606091318/" class="icon brands fa-linkedin" target="_blank"><span class="label">LinkedIn</span></a></li>
-							<li><a href="https://github.com/KaviyanJ" class="icon brands fa-github" target="_blank"><span class="label">GitHub</span></a></li>
-						</ul>
-					</nav>
+    #topnav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:1rem 2.5rem;background:rgba(7,9,15,.75);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+    .nav-logo{font-family:var(--mono);font-size:1rem;color:var(--cyan);letter-spacing:2px}
+    .nav-logo em{color:var(--muted);font-style:normal}
+    .nav-links{display:flex;gap:2.2rem;list-style:none}
+    .nav-links a{font-size:.8rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);position:relative;transition:color .25s}
+    .nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;right:0;height:1px;background:var(--cyan);transform:scaleX(0);transition:transform .25s}
+    .nav-links a:hover,.nav-links a.active{color:var(--cyan)}
+    .nav-links a:hover::after,.nav-links a.active::after{transform:scaleX(1)}
+    .nav-icons{display:flex;gap:1.2rem;list-style:none}
+    .nav-icons a{font-size:1rem;color:var(--muted);transition:color .25s,text-shadow .25s}
+    .nav-icons a:hover{color:var(--cyan);text-shadow:0 0 12px var(--cyan)}
 
-				<!-- Main -->
-					<div id="main">
+    section{position:relative;z-index:1}
+    .wrap{max-width:1100px;margin:0 auto;padding:6rem 2rem}
 
-						<!-- Post -->
-							<section class="post">
-								<header class="major">
-									<span class="date">Biography</span>
-									<h1>All About<br />
-									Me</h1>
-									<p>Hey there! I'm Kaviyan Jeyakumar. Born and raised in Canada with a proud Sri Lankan heritage. When I'm not deep in my engineering coursework, 
-										you can usually find me with a good book, on the soccer field with friends, or at the gym. Lately, cooking has become a welcome hobby. 
-										I find it to be a uniquely relaxing activity that also provides a great sense of accomplishment. </p>
-								</header>
-								
-								<div class="image main">
-									<img src="https://drive.google.com/thumbnail?id=1JfTpKyHSoVio4MvpucfZhjijm7ju5Eru&sz=w1080-h1080" alt="Kaviyan Jeyakumar" />
-								</div>
-								
-								<p>Professionally, I'm an aspiring Electrical Engineer with a fascination for taking on big challenges. That's what led me to join the Orbital CubeSat team, 
-									where I'm currently working with an amazing group of people to build and test a satellite from the ground up. This experience has solidified my passion 
-									for the field, and I'm excited about a future where I can help design the complex systems that power modern technology, whether it's here on Earth or in 
-									orbit.</p>
-							</section>
+    /* ABOUT HERO */
+    #about-hero{min-height:60vh;display:flex;align-items:center;padding:9rem 2rem 3rem}
+    .ah-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center}
+    .ah-badge{display:inline-flex;align-items:center;gap:.5rem;background:rgba(0,229,255,.07);border:1px solid var(--border);border-radius:100px;padding:.4rem 1.1rem;font-family:var(--mono);font-size:.72rem;color:var(--cyan);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:1.5rem}
+    .ah-badge::before{content:'';width:7px;height:7px;background:var(--green);border-radius:50%;animation:pdot 2s infinite}
+    @keyframes pdot{0%,100%{box-shadow:0 0 0 0 rgba(16,185,129,.7)}50%{box-shadow:0 0 0 6px rgba(16,185,129,0)}}
+    .ah-title{font-size:clamp(2.4rem,5vw,4.2rem);font-weight:900;letter-spacing:-2px;line-height:1.05;margin-bottom:1rem}
+    .ah-title .hl{color:var(--cyan);text-shadow:0 0 40px rgba(0,229,255,.4)}
+    .ah-sub{color:var(--muted);font-size:.97rem;line-height:1.85;margin-bottom:2rem}
+    .ah-btns{display:flex;gap:1rem;flex-wrap:wrap}
+    .btn-p{background:var(--cyan);color:var(--bg);padding:.75rem 1.8rem;border-radius:8px;font-weight:700;font-size:.82rem;letter-spacing:1.5px;text-transform:uppercase;box-shadow:0 0 24px var(--cyan-glow);transition:transform .2s,box-shadow .2s}
+    .btn-p:hover{transform:translateY(-2px);box-shadow:0 0 36px var(--cyan-glow),0 8px 20px rgba(0,0,0,.3)}
+    .btn-s{background:transparent;color:var(--text);padding:.75rem 1.8rem;border-radius:8px;font-weight:600;font-size:.82rem;letter-spacing:1.5px;text-transform:uppercase;border:1px solid var(--border);transition:border-color .2s,color .2s,transform .2s}
+    .btn-s:hover{border-color:var(--cyan);color:var(--cyan);transform:translateY(-2px)}
 
-					</div>
+    /* PROFILE PHOTO */
+    .ah-photo{position:relative}
+    .photo-frame{position:relative;border-radius:20px;overflow:hidden;border:1px solid var(--border);box-shadow:0 0 60px rgba(0,229,255,.08)}
+    .photo-frame img{width:100%;display:block;filter:brightness(.9) saturate(1.1)}
+    .photo-glow{position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,229,255,.05) 0%,transparent 60%)}
+    .photo-badge{position:absolute;bottom:1.2rem;left:1.2rem;background:rgba(7,9,15,.85);backdrop-filter:blur(10px);border:1px solid var(--border);border-radius:10px;padding:.6rem 1rem;font-family:var(--mono);font-size:.72rem;color:var(--cyan)}
+    .corner-deco{position:absolute;width:40px;height:40px;border-color:var(--cyan);border-style:solid;opacity:.4}
+    .corner-deco.tl{top:-8px;left:-8px;border-width:2px 0 0 2px}
+    .corner-deco.br{bottom:-8px;right:-8px;border-width:0 2px 2px 0}
 
-				<!-- Footer -->
-					<footer id="footer">
-						<section class="split contact">
-							<section class="field">
-								<h3>Address</h3>
-								<p>Toronto, Ontario, Canada</p>
-							</section>
-							<section>
-								<h3>Phone</h3>
-								<p><a href="#">(647) 513-6816</a></p>
-							</section>
-							<section>
-								<h3>Email</h3>
-								<p><a href="mailto:kaviyan.n.jeyakumar@gmail.com">kaviyan.n.jeyakumar@gmail.com</a></p>
-							</section>
-							<section>
-								<h3>Social</h3>
-								<ul class="icons alt">
-									<li><a href="https://www.linkedin.com/in/kaviyan-jeyakumar-606091318/" class="icon brands alt fa-linkedin" target="_blank"><span class="label">LinkedIn</span></a></li>
-									<li><a href="https://github.com/KaviyanJ" class="icon brands alt fa-github" target="_blank"><span class="label">GitHub</span></a></li>
-								</ul>
-							</section>
-						</section>
-					</footer>
+    /* SECTIONS */
+    .sec-tag{display:inline-flex;align-items:center;gap:.5rem;font-family:var(--mono);font-size:.7rem;color:var(--cyan);text-transform:uppercase;letter-spacing:3px;margin-bottom:.6rem}
+    .sec-tag::before{content:'';width:28px;height:1px;background:var(--cyan)}
+    .sec-title{font-size:clamp(1.8rem,3.5vw,2.6rem);font-weight:800;letter-spacing:-1px;margin-bottom:.5rem}
+    .sec-title .hl{color:var(--cyan)}
 
-				<!-- Copyright -->
-					<div id="copyright">
-						<ul><li>&copy; Kaviyan Jeyakumar</li><li>Design: HTML5 UP</li></ul>
-					</div>
+    /* ABOUT TEXT */
+    #about-text .wrap{padding-top:2rem;padding-bottom:4rem}
+    .about-grid{display:grid;grid-template-columns:2fr 1fr;gap:3rem;align-items:start}
+    .about-body p{color:var(--muted);font-size:.97rem;line-height:1.9;margin-bottom:1.3rem}
+    .about-body p strong{color:var(--text)}
+    .about-body p .hl{color:var(--cyan)}
 
-			</div>
+    /* FUN FACTS */
+    .fun-facts{display:flex;flex-direction:column;gap:.9rem}
+    .fact-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.1rem 1.3rem;transition:border-color .3s,transform .3s}
+    .fact-card:hover{border-color:var(--cyan);transform:translateX(5px)}
+    .fact-ico{font-size:1.3rem;margin-bottom:.4rem}
+    .fact-label{font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:.15rem}
+    .fact-val{font-size:.92rem;font-weight:600}
 
-		<!-- Scripts -->
-			<script src="assets/js/jquery.min.js"></script>
-			<script src="assets/js/jquery.scrollex.min.js"></script>
-			<script src="assets/js/jquery.scrolly.min.js"></script>
-			<script src="assets/js/browser.min.js"></script>
-			<script src="assets/js/breakpoints.min.js"></script>
-			<script src="assets/js/util.js"></script>
-			<script src="assets/js/main.js"></script>
+    /* VALUES */
+    .values-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1.2rem;margin-top:2rem}
+    .val-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.5rem;transition:border-color .3s,transform .3s}
+    .val-card:hover{border-color:var(--cyan);transform:translateY(-4px)}
+    .val-ico{width:42px;height:42px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:1rem;margin-bottom:1rem}
+    .vic{background:rgba(0,229,255,.1);color:var(--cyan)}
+    .vip{background:rgba(168,85,247,.1);color:var(--purple)}
+    .vio{background:rgba(249,115,22,.1);color:var(--orange)}
+    .vig{background:rgba(16,185,129,.1);color:var(--green)}
+    .val-card h4{font-size:.95rem;font-weight:700;margin-bottom:.5rem}
+    .val-card p{font-size:.84rem;color:var(--muted);line-height:1.6}
 
-	</body>
+    /* CONTACT FOOTER */
+    .con-foot{border-top:1px solid var(--border);padding:3rem 2rem;max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1.5rem}
+    .con-foot-left h3{font-size:1.5rem;font-weight:700;margin-bottom:.4rem}
+    .con-foot-left h3 span{color:var(--cyan)}
+    .con-foot-left p{color:var(--muted);font-size:.9rem}
+    .con-foot-right{display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
+    .con-info{display:flex;align-items:center;gap:.6rem;color:var(--muted);font-size:.88rem}
+    .con-info i{color:var(--cyan)}
+    .con-info a{color:var(--muted);transition:color .2s}
+    .con-info a:hover{color:var(--cyan)}
+    .socials{display:flex;gap:.7rem}
+    .soc-btn{width:44px;height:44px;background:var(--surface);border:1px solid var(--border);border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:.95rem;color:var(--muted);transition:all .3s}
+    .soc-btn:hover{border-color:var(--cyan);color:var(--cyan);box-shadow:0 0 16px var(--cyan-glow);transform:translateY(-3px)}
+
+    .foot{text-align:center;padding:1.6rem;color:var(--muted);font-size:.78rem;border-top:1px solid var(--border)}
+    .foot span{color:var(--cyan)}
+
+    .reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease}
+    .reveal.up{opacity:1;transform:translateY(0)}
+
+    @media(max-width:768px){
+      #topnav{padding:.9rem 1.2rem}.nav-links{display:none}
+      .ah-inner{grid-template-columns:1fr;gap:2rem}
+      .ah-photo{order:-1}
+      .about-grid{grid-template-columns:1fr}
+      .con-foot{flex-direction:column;align-items:flex-start}
+    }
+  </style>
+</head>
+<body>
+
+<div id="cur-ring"></div>
+<div id="cur-dot"></div>
+
+<svg id="c-circuit" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <pattern id="circ" x="0" y="0" width="120" height="120" patternUnits="userSpaceOnUse">
+      <path d="M0 60 L30 60 L30 20 L80 20 L80 60 L120 60" stroke="#00e5ff" stroke-width=".6" fill="none"/>
+      <path d="M60 0 L60 30 L90 30 L90 90 L60 90 L60 120" stroke="#00e5ff" stroke-width=".6" fill="none"/>
+      <path d="M20 90 L50 90 L50 110" stroke="#00e5ff" stroke-width=".4" fill="none"/>
+      <circle cx="30" cy="60" r="2.5" fill="none" stroke="#00e5ff" stroke-width=".6"/>
+      <circle cx="80" cy="20" r="2.5" fill="none" stroke="#00e5ff" stroke-width=".6"/>
+      <circle cx="60" cy="30" r="2.5" fill="none" stroke="#00e5ff" stroke-width=".6"/>
+      <circle cx="90" cy="90" r="2.5" fill="none" stroke="#00e5ff" stroke-width=".6"/>
+      <rect x="75" y="55" width="10" height="10" stroke="#00e5ff" stroke-width=".5" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#circ)"/>
+</svg>
+<canvas id="c-particles"></canvas>
+
+<!-- NAV -->
+<nav id="topnav">
+  <div class="nav-logo">[KJ]<em> // portfolio</em></div>
+  <ul class="nav-links">
+    <li><a href="index.html">Projects</a></li>
+    <li><a href="aboutme.html" class="active">About Me</a></li>
+  </ul>
+  <ul class="nav-icons">
+    <li><a href="https://www.linkedin.com/in/kaviyan-jeyakumar-606091318/" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a></li>
+    <li><a href="https://github.com/KaviyanJ" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="about-hero">
+  <div class="ah-inner">
+    <div class="reveal">
+      <div class="ah-badge">Waterloo EE '29</div>
+      <h1 class="ah-title">Hey, I'm<br><span class="hl">Kaviyan.</span></h1>
+      <p class="ah-sub">
+        Born and raised in Canada with a proud Sri Lankan heritage. I'm an aspiring Electrical Engineer with a fascination for building complex systems — from the circuit board up. When I'm not deep in schematics, you'll find me on the soccer pitch, at the gym, or experimenting in the kitchen.
+      </p>
+      <div class="ah-btns">
+        <a href="index.html" class="btn-p">View Projects</a>
+        <a href="mailto:kaviyan.n.jeyakumar@gmail.com" class="btn-s">Say Hello</a>
+      </div>
+    </div>
+    <div class="ah-photo reveal">
+      <div class="photo-frame">
+        <img src="https://drive.google.com/thumbnail?id=1JfTpKyHSoVio4MvpucfZhjijm7ju5Eru&sz=w1080-h1080" alt="Kaviyan Jeyakumar">
+        <div class="photo-glow"></div>
+        <div class="photo-badge"><i class="fas fa-map-marker-alt"></i> Toronto, Canada</div>
+      </div>
+      <div class="corner-deco tl"></div>
+      <div class="corner-deco br"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT TEXT -->
+<section id="about-text">
+  <div class="wrap">
+    <div class="about-grid">
+      <div class="about-body reveal">
+        <div class="sec-tag"><i class="fas fa-user-astronaut"></i> Biography</div>
+        <h2 class="sec-title" style="margin-bottom:1.5rem">The Full <span class="hl">Story</span></h2>
+        <p>I'm a first-year Electrical Engineering student at the <strong>University of Waterloo</strong>, one of Canada's top engineering programs. My journey into hardware started with curiosity — I wanted to understand how the devices around me actually worked, down to the electron level.</p>
+        <p>That curiosity led me to join the <strong class="hl">Orbital CubeSat Team</strong>, where I work with an incredible group to build and test a satellite from scratch. Designing power systems, validating performance in simulation, then seeing those numbers match real hardware — that's the part that gets me excited.</p>
+        <p>My co-op at <strong>Electrans Technology</strong> turned that curiosity into professional experience. I went from writing LTSpice sims to having my electrical validation work on a product that's now <strong>retailed on DigiKey</strong>. I also cut a critical thermal shutdown problem down to near-zero by rethinking the power architecture — a 90.2% reduction in heat dissipation. Those are the wins that stick.</p>
+        <p>Outside of engineering, I'm someone who values <strong>getting things done right</strong>. I read broadly, play soccer competitively, and recently discovered that cooking is surprisingly similar to engineering — both reward patience and precision.</p>
+      </div>
+      <div class="reveal">
+        <div class="sec-tag" style="margin-bottom:1rem"><i class="fas fa-gamepad"></i> Quick Stats</div>
+        <div class="fun-facts">
+          <div class="fact-card">
+            <div class="fact-ico">⚡</div>
+            <div class="fact-label">Degree</div>
+            <div class="fact-val">BASc Electrical Engineering</div>
+          </div>
+          <div class="fact-card">
+            <div class="fact-ico">🏫</div>
+            <div class="fact-label">University</div>
+            <div class="fact-val">University of Waterloo</div>
+          </div>
+          <div class="fact-card">
+            <div class="fact-ico">📍</div>
+            <div class="fact-label">Location</div>
+            <div class="fact-val">Toronto, Ontario</div>
+          </div>
+          <div class="fact-card">
+            <div class="fact-ico">🌍</div>
+            <div class="fact-label">Heritage</div>
+            <div class="fact-val">Canadian · Sri Lankan</div>
+          </div>
+          <div class="fact-card">
+            <div class="fact-ico">⚽</div>
+            <div class="fact-label">Off the Clock</div>
+            <div class="fact-val">Soccer · Gym · Cooking · Reading</div>
+          </div>
+          <div class="fact-card">
+            <div class="fact-ico">🚀</div>
+            <div class="fact-label">Current Mission</div>
+            <div class="fact-val">Building a CubeSat from scratch</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VALUES -->
+<section id="values">
+  <div class="wrap" style="padding-top:1rem">
+    <div class="sec-tag"><i class="fas fa-star"></i> What Drives Me</div>
+    <h2 class="sec-title">Core <span class="hl">Values</span></h2>
+    <div class="values-grid">
+      <div class="val-card reveal">
+        <div class="val-ico vic"><i class="fas fa-drafting-compass"></i></div>
+        <h4>Hardware First</h4>
+        <p>I believe the most satisfying engineering happens when simulation meets reality. Seeing a PCB pass validation that you designed from scratch is unbeatable.</p>
+      </div>
+      <div class="val-card reveal">
+        <div class="val-ico vip"><i class="fas fa-chart-line"></i></div>
+        <h4>Metrics Matter</h4>
+        <p>Whether it's 84.8% power efficiency or 90%+ time saved, I always aim to quantify impact. Good engineering has numbers attached.</p>
+      </div>
+      <div class="val-card reveal">
+        <div class="val-ico vio"><i class="fas fa-bolt"></i></div>
+        <h4>Full-Stack Thinking</h4>
+        <p>From LTSpice to Python scripts to Node.js APIs — I bridge hardware and software to create systems that actually work end-to-end.</p>
+      </div>
+      <div class="val-card reveal">
+        <div class="val-ico vig"><i class="fas fa-users"></i></div>
+        <h4>Teach to Learn</h4>
+        <p>Explaining complex electronics to 120+ campers taught me that the best way to master something is to break it down for someone else.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT FOOTER -->
+<section style="position:relative;z-index:1;border-top:1px solid var(--border)">
+  <div class="con-foot">
+    <div class="con-foot-left">
+      <h3>Ready to <span>build something</span>?</h3>
+      <p>Open to Spring 2026 internship opportunities in hardware & embedded systems.</p>
+    </div>
+    <div class="con-foot-right">
+      <div class="con-info"><i class="fas fa-envelope"></i><a href="mailto:kaviyan.n.jeyakumar@gmail.com">kaviyan.n.jeyakumar@gmail.com</a></div>
+      <div class="con-info"><i class="fas fa-phone"></i><a href="tel:6475136816">(647) 513-6816</a></div>
+      <div class="socials">
+        <a href="https://www.linkedin.com/in/kaviyan-jeyakumar-606091318/" class="soc-btn" target="_blank"><i class="fab fa-linkedin"></i></a>
+        <a href="https://github.com/KaviyanJ" class="soc-btn" target="_blank"><i class="fab fa-github"></i></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="foot">
+  <p>Designed & Built by <span>Kaviyan Jeyakumar</span> · Waterloo Electrical Engineering '29</p>
+</div>
+
+<script>
+const ring=document.getElementById('cur-ring'),dot=document.getElementById('cur-dot');
+const TRAIL=10,trails=Array.from({length:TRAIL},(_,i)=>{const el=document.createElement('div');el.className='cur-trail';const s=Math.max(1.5,4-i*.25);el.style.cssText=`width:${s}px;height:${s}px;opacity:${(1-i/TRAIL)*.35}`;document.body.appendChild(el);return{el,x:0,y:0}});
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY});
+document.querySelectorAll('a,button,.val-card,.fact-card').forEach(el=>{el.addEventListener('mouseenter',()=>document.body.classList.add('cur-hover'));el.addEventListener('mouseleave',()=>document.body.classList.remove('cur-hover'))});
+(function a(){dot.style.left=mx+'px';dot.style.top=my+'px';rx+=(mx-rx)*.1;ry+=(my-ry)*.1;ring.style.left=rx+'px';ring.style.top=ry+'px';for(let i=TRAIL-1;i>0;i--){trails[i].x+=(trails[i-1].x-trails[i].x)*.28;trails[i].y+=(trails[i-1].y-trails[i].y)*.28;trails[i].el.style.left=trails[i].x+'px';trails[i].el.style.top=trails[i].y+'px'}trails[0].x+=(mx-trails[0].x)*.5;trails[0].y+=(my-trails[0].y)*.5;trails[0].el.style.left=trails[0].x+'px';trails[0].el.style.top=trails[0].y+'px';requestAnimationFrame(a)})();
+
+const cvs=document.getElementById('c-particles'),ctx=cvs.getContext('2d');
+const resize=()=>{cvs.width=innerWidth;cvs.height=innerHeight};resize();window.addEventListener('resize',resize);
+class P{constructor(){this.reset()}reset(){this.x=Math.random()*cvs.width;this.y=Math.random()*cvs.height;this.r=Math.random()*1.4+.4;this.vx=(Math.random()-.5)*.25;this.vy=(Math.random()-.5)*.25;this.a=Math.random()*.35+.08;this.c=Math.random()>.55?'#00e5ff':Math.random()>.5?'#a855f7':'#ffffff'}step(){this.x+=this.vx;this.y+=this.vy;if(this.x<0||this.x>cvs.width||this.y<0||this.y>cvs.height)this.reset()}draw(){ctx.beginPath();ctx.arc(this.x,this.y,this.r,0,Math.PI*2);ctx.fillStyle=this.c;ctx.globalAlpha=this.a;ctx.fill();ctx.globalAlpha=1}}
+const pts=Array.from({length:130},()=>new P());
+(function ap(){ctx.clearRect(0,0,cvs.width,cvs.height);pts.forEach(p=>{p.step();p.draw()});pts.forEach((p,i)=>{pts.slice(i+1,i+6).forEach(q=>{const d=Math.hypot(p.x-q.x,p.y-q.y);if(d<110){ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.strokeStyle='#00e5ff';ctx.globalAlpha=(1-d/110)*.07;ctx.lineWidth=.5;ctx.stroke();ctx.globalAlpha=1}})});requestAnimationFrame(ap)})();
+
+const revs=document.querySelectorAll('.reveal');
+const check=()=>revs.forEach(el=>{if(el.getBoundingClientRect().top<innerHeight*.9)el.classList.add('up')});
+window.addEventListener('scroll',check,{passive:true});window.addEventListener('load',()=>{check();setTimeout(check,300)});check();
+</script>
+</body>
 </html>

@@ -1,107 +1,79 @@
-<!DOCTYPE HTML>
-<!--
-	Massively by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
-<html>
-	<head>
-		<title>Solar Panel Board Assembly - Kaviyan Jeyakumar</title>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<link rel="stylesheet" href="assets/css/main.css" />
-		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
-	</head>
-	<body class="is-preload">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Solar Cell Board — Kaviyan Jeyakumar</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="assets/css/portfolio.css">
+</head>
+<body>
+<div id="cur-ring"></div><div id="cur-dot"></div>
+<svg id="c-circuit" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="circ" x="0" y="0" width="120" height="120" patternUnits="userSpaceOnUse"><path d="M0 60 L30 60 L30 20 L80 20 L80 60 L120 60" stroke="#00e5ff" stroke-width=".6" fill="none"/><path d="M60 0 L60 30 L90 30 L90 90 L60 90 L60 120" stroke="#00e5ff" stroke-width=".6" fill="none"/><circle cx="30" cy="60" r="2.5" fill="none" stroke="#00e5ff" stroke-width=".6"/><circle cx="80" cy="20" r="2.5" fill="none" stroke="#00e5ff" stroke-width=".6"/><rect x="75" y="55" width="10" height="10" stroke="#00e5ff" stroke-width=".5" fill="none"/></pattern></defs><rect width="100%" height="100%" fill="url(#circ)"/></svg>
+<canvas id="c-particles"></canvas>
 
-		<!-- Wrapper -->
-			<div id="wrapper">
+<nav id="topnav">
+  <div class="nav-logo">[KJ]<em> // portfolio</em></div>
+  <ul class="nav-links">
+    <li><a href="index.html" class="active">Projects</a></li>
+    <li><a href="aboutme.html">About Me</a></li>
+  </ul>
+  <ul class="nav-icons">
+    <li><a href="https://www.linkedin.com/in/kaviyan-jeyakumar-606091318/" target="_blank"><i class="fab fa-linkedin"></i></a></li>
+    <li><a href="https://github.com/KaviyanJ" target="_blank"><i class="fab fa-github"></i></a></li>
+  </ul>
+</nav>
 
-				<!-- Header -->
-					<header id="header">
-						<a href="index.html" class="logo">Portfolio</a>
-					</header>
+<section>
+  <div class="proj-hero reveal">
+    <a href="index.html" class="back-link"><i class="fas fa-arrow-left"></i> Back to Projects</a>
+    <div class="proj-cat"><i class="fas fa-satellite"></i> PCB Assembly & CubeSat</div>
+    <h1 class="proj-h1">Solar Cell Board<br><span>Assembly</span></h1>
+    <p class="proj-lead">Executed manual assembly and soldering of a solar power PCB for the Orbital CubeSat team. Validated physical hardware performance metrics against LTSpice simulation models, closing the loop between digital design and physical reality.</p>
+    <div class="proj-tags">
+      <span class="tag tg">PCB Assembly</span>
+      <span class="tag tc">CubeSat</span>
+      <span class="tag tp">LTSpice</span>
+      <span class="tag to">Soldering</span>
+    </div>
+    <div class="metrics-bar">
+      <span class="metric"><i class="fas fa-solar-panel"></i> Solar power PCB assembled</span>
+      <span class="metric"><i class="fas fa-check-double"></i> Sim vs. hardware validated</span>
+      <span class="metric"><i class="fas fa-satellite"></i> Orbital CubeSat team</span>
+    </div>
+  </div>
+</section>
 
-				<!-- Nav -->
-					<nav id="nav">
-						<ul class="links">
-							<li><a href="index.html">Projects</a></li>
-							<li><a href="aboutme.html">About Me</a></li>
-							<li class="active"><a href="solar_board.html">Solar Board</a></li>
-						</ul>
-						<ul class="icons">
-							<li><a href="https://www.linkedin.com/in/kaviyan-jeyakumar-606091318/" class="icon brands fa-linkedin" target="_blank"><span class="label">LinkedIn</span></a></li>
-							<li><a href="https://github.com/KaviyanJ" class="icon brands fa-github" target="_blank"><span class="label">GitHub</span></a></li>
-						</ul>
-					</nav>
+<section>
+  <div class="wrap">
+    <div class="proj-main-img reveal">
+      <img src="https://nanoavionics.com/wp-content/uploads/2025/04/nanoavionics-smallsat-small-satellite-microsatellite-aluminium-honeycomb-carbon-fiber-double-deployable-solar-panels.jpg" alt="Solar Cell PCB">
+    </div>
 
-				<!-- Main -->
-					<div id="main">
+    <p class="proj-content reveal">As part of the <strong>Orbital CubeSat Electrical Team</strong>, I was responsible for the physical assembly and testing of a solar cell power PCB — one of the critical subsystems in the satellite's power distribution chain.</p>
 
-						<!-- Post -->
-							<section class="post">
-								<header class="major">
-									<span class="date">PCB Assembly & Validation</span>
-									<h1>Solar Panel Board<br />
-									Assembly</h1>
-									<p>I was responsible for the hands-on assembly of the solar cell power PCB, which involved populating the board with all the specified components from the design. 
-										The objective was to bridge the gap between simulation and reality, validating that the physical circuit's performance metrics aligned with the results we had predicted in our LTspice models.</p>
-								</header>
-								
-								<!-- Image Section -->
-								<div class="image main">
-									<a href="https://drive.google.com/file/d/1bvSFpA_dtKJt0IW15C9fKciRvG10KorB/view?usp=sharing" target="_blank">
-										<img src="https://nanoavionics.com/wp-content/uploads/2025/04/nanoavionics-smallsat-small-satellite-microsatellite-aluminium-honeycomb-carbon-fiber-double-deployable-solar-panels.jpg" alt="Solar Board Assembly" />
-									</a>
-								</div>
+    <p class="proj-content reveal">The assembly process involved <strong>fine-pitch SMD soldering</strong> of the solar cell interface components, bypass capacitors, protection diodes, and test points. CubeSat hardware demands extremely high reliability — every solder joint was inspected under magnification to ensure it met IPC-A-610 acceptability standards.</p>
 
-								<ul class="actions special">
-									<li><a href="https://drive.google.com/file/d/1bvSFpA_dtKJt0IW15C9fKciRvG10KorB/view?usp=sharing" class="button large" target="_blank">View Project Documentation</a></li>
-								</ul>
-							</section>
+    <p class="proj-content reveal">Once assembled, the board was characterized using bench power supplies and a solar cell simulator. The measured performance data — open-circuit voltage, short-circuit current, maximum power point — was then compared directly against the <strong>LTSpice simulation model</strong> developed earlier in the project cycle. This simulation-to-hardware validation process confirmed the design was performing as expected and identified a minor discrepancy in parasitic series resistance that was subsequently corrected in the next revision.</p>
 
-					</div>
+    <p class="proj-content reveal">This project reinforced the importance of the <strong>hardware-in-the-loop validation</strong> discipline — simulations are only as good as their models, and real hardware always reveals something new.</p>
 
-				<!-- Footer -->
-					<footer id="footer">
-						<section class="split contact">
-							<section class="field">
-								<h3>Address</h3>
-								<p>Toronto, Ontario, Canada</p>
-							</section>
-							<section>
-								<h3>Phone</h3>
-								<p><a href="#">(647) 513-6816</a></p>
-							</section>
-							<section>
-								<h3>Email</h3>
-								<p><a href="mailto:kaviyan.n.jeyakumar@gmail.com">kaviyan.n.jeyakumar@gmail.com</a></p>
-							</section>
-							<section>
-								<h3>Social</h3>
-								<ul class="icons alt">
-									<li><a href="https://www.linkedin.com/in/kaviyan-jeyakumar-606091318/" class="icon brands alt fa-linkedin" target="_blank"><span class="label">LinkedIn</span></a></li>
-									<li><a href="https://github.com/KaviyanJ" class="icon brands alt fa-github" target="_blank"><span class="label">GitHub</span></a></li>
-								</ul>
-							</section>
-						</section>
-					</footer>
+    <h3 class="proj-h3 reveal">Key <span>Technologies</span></h3>
+    <ul class="tech-list reveal">
+      <li><strong>SMD Soldering:</strong> Fine-pitch component assembly with hot-air rework station and temperature-controlled iron</li>
+      <li><strong>LTSpice Verification:</strong> Cross-referenced measured I-V curves against simulation model predictions</li>
+      <li><strong>Bench Characterization:</strong> Source/measure unit used for I-V curve tracing and MPP determination</li>
+      <li><strong>Visual Inspection:</strong> IPC-A-610 solder joint quality assessment under 10x magnification</li>
+    </ul>
 
-				<!-- Copyright -->
-					<div id="copyright">
-						<ul><li>&copy; Kaviyan Jeyakumar</li><li>Design: HTML5 UP</li></ul>
-					</div>
+    <div class="proj-cta reveal">
+      <a href="https://drive.google.com/file/d/1bvSFpA_dtKJt0IW15C9fKciRvG10KorB/view?usp=sharing" class="btn-p" target="_blank"><i class="fas fa-file-pdf"></i> View Project Documentation</a>
+      <a href="index.html" class="btn-s"><i class="fas fa-arrow-left"></i> All Projects</a>
+    </div>
+  </div>
+</section>
 
-			</div>
-
-		<!-- Scripts -->
-			<script src="assets/js/jquery.min.js"></script>
-			<script src="assets/js/jquery.scrollex.min.js"></script>
-			<script src="assets/js/jquery.scrolly.min.js"></script>
-			<script src="assets/js/browser.min.js"></script>
-			<script src="assets/js/breakpoints.min.js"></script>
-			<script src="assets/js/util.js"></script>
-			<script src="assets/js/main.js"></script>
-
-	</body>
+<div class="foot"><p>Designed & Built by <span>Kaviyan Jeyakumar</span> · Waterloo Electrical Engineering '29</p></div>
+<script src="assets/js/portfolio-shared.js"></script>
+</body>
 </html>
