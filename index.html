@@ -479,6 +479,7 @@
     <div class="sec-tag"><i class="fas fa-microchip"></i> Projects</div>
     <h2 class="sec-title">What I've <span class="hl">Built</span></h2>
     <p class="sec-sub">From concept to validated hardware — real projects with measurable outcomes.</p>
+    <!-- PROJECTS-START -->
     <div class="proj-grid">
 
       <!-- FEATURED -->
@@ -651,6 +652,7 @@
       </article>
 
     </div>
+    <!-- PROJECTS-END -->
   </div>
 </section>
 
@@ -924,6 +926,14 @@ window.addEventListener('scroll', () => {
     if (!sec) return;
   });
 }, {passive: true});
+
+// SECRET ADMIN ACCESS — click [KJ] logo 5 times quickly
+let _lc = 0, _lt;
+document.querySelector('.nav-logo').addEventListener('click', () => {
+  _lc++; clearTimeout(_lt);
+  _lt = setTimeout(() => _lc = 0, 1500);
+  if (_lc >= 5) window.location.href = 'admin.html';
+});
 </script>
 </body>
 </html>

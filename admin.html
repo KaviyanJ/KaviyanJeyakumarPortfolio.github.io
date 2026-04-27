@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin — KJ Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    :root {
+      --bg: #07090f; --surface: #0d1117; --card: #111827; --card2: #1a2332;
+      --border: rgba(0,229,255,.14); --border-h: rgba(0,229,255,.45);
+      --cyan: #00e5ff; --cyan-glow: rgba(0,229,255,.2);
+      --purple: #a855f7; --orange: #f97316; --green: #10b981; --red: #ef4444;
+      --text: #e2e8f0; --muted: #64748b;
+      --font: 'Inter', system-ui, sans-serif;
+      --mono: 'JetBrains Mono', monospace;
+    }
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{background:var(--bg);color:var(--text);font-family:var(--font);line-height:1.6;overflow-x:hidden;min-height:100vh}
+    a{color:inherit;text-decoration:none}
+    ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--surface)}::-webkit-scrollbar-thumb{background:var(--cyan);border-radius:3px}
+
+    /* ── LOGIN SCREEN ── */
+    #login-screen {
+      position:fixed;inset:0;background:var(--bg);z-index:1000;
+      display:flex;align-items:center;justify-content:center;
+    }
+    .login-wrap {
+      background:var(--card);border:1px solid var(--border);border-radius:24px;
+      padding:3rem 2.5rem;width:100%;max-width:420px;text-align:center;
+      box-shadow:0 40px 80px rgba(0,0,0,.6),0 0 60px rgba(0,229,255,.05);
+    }
+    .login-logo {
+      font-family:var(--mono);font-size:1.1rem;color:var(--cyan);
+      letter-spacing:2px;margin-bottom:1.5rem;
+    }
+    .login-logo em{color:var(--muted);font-style:normal}
+    .login-wrap h2{font-size:1.6rem;font-weight:800;margin-bottom:.4rem}
+    .login-wrap p{color:var(--muted);font-size:.9rem;margin-bottom:2rem}
+    .login-wrap input[type=password], .login-wrap input[type=text] {
+      width:100%;background:var(--surface);border:1px solid var(--border);
+      border-radius:10px;padding:.85rem 1rem;font-size:.95rem;color:var(--text);
+      font-family:var(--font);outline:none;transition:border-color .2s;
+      margin-bottom:1rem;
+    }
+    .login-wrap input:focus{border-color:var(--cyan)}
+    .btn-cyan {
+      width:100%;background:var(--cyan);color:var(--bg);border:none;
+      border-radius:10px;padding:.85rem;font-size:.9rem;font-weight:700;
+      letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;
+      box-shadow:0 0 20px var(--cyan-glow);transition:transform .2s,box-shadow .2s;
+    }
+    .btn-cyan:hover{transform:translateY(-2px);box-shadow:0 0 32px var(--cyan-glow)}
+    .err-msg{color:var(--red);font-size:.85rem;margin-top:.8rem;display:none}
+    .err-msg.show{display:block}
+
+    /* ── ADMIN HEADER ── */
+    #admin-header {
+      position:sticky;top:0;z-index:100;
+      background:rgba(7,9,15,.9);backdrop-filter:blur(20px);
+      border-bottom:1px solid var(--border);
+      padding:.9rem 2rem;
+      display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;
+    }
+    .ah-left{display:flex;align-items:center;gap:1rem}
+    .ah-logo{font-family:var(--mono);font-size:.95rem;color:var(--cyan);letter-spacing:2px}
+    .ah-logo em{color:var(--muted);font-style:normal}
+    .admin-badge{
+      background:rgba(249,115,22,.12);border:1px solid rgba(249,115,22,.3);
+      border-radius:100px;padding:.2rem .8rem;font-size:.7rem;
+      color:var(--orange);font-weight:700;text-transform:uppercase;letter-spacing:1px;
+    }
+    .ah-right{display:flex;gap:.6rem;flex-wrap:wrap}
+    .btn-sm {
+      display:inline-flex;align-items:center;gap:.4rem;
+      padding:.5rem 1rem;border-radius:8px;font-size:.8rem;font-weight:600;
+      letter-spacing:.5px;cursor:pointer;border:none;transition:all .2s;
+    }
+    .btn-add{background:var(--cyan);color:var(--bg)}
+    .btn-add:hover{box-shadow:0 0 16px var(--cyan-glow);transform:translateY(-1px)}
+    .btn-export{background:var(--purple);color:#fff}
+    .btn-export:hover{opacity:.9;transform:translateY(-1px)}
+    .btn-preview{background:var(--surface);color:var(--text);border:1px solid var(--border)}
+    .btn-preview:hover{border-color:var(--cyan);color:var(--cyan)}
+    .btn-logout{background:var(--surface);color:var(--muted);border:1px solid var(--border)}
+    .btn-logout:hover{border-color:var(--red);color:var(--red)}
+    .btn-pw{background:var(--surface);color:var(--muted);border:1px solid var(--border)}
+    .btn-pw:hover{border-color:var(--orange);color:var(--orange)}
+
+    /* ── MAIN ── */
+    #admin-main{max-width:1100px;margin:0 auto;padding:2rem}
+    .admin-section-title{
+      font-size:.7rem;font-family:var(--mono);color:var(--muted);
+      text-transform:uppercase;letter-spacing:3px;
+      display:flex;align-items:center;gap:.5rem;
+      border-bottom:1px solid var(--border);padding-bottom:.75rem;margin-bottom:1.5rem;
+    }
+    .admin-section-title span{color:var(--cyan)}
+
+    /* ── PROJECT LIST ── */
+    #proj-list{display:flex;flex-direction:column;gap:.7rem}
+    .proj-item {
+      background:var(--card);border:1px solid var(--border);border-radius:14px;
+      display:flex;align-items:center;gap:1rem;padding:.9rem 1.2rem;
+      transition:border-color .2s,box-shadow .2s;
+      cursor:default;
+    }
+    .proj-item:hover{border-color:rgba(0,229,255,.25)}
+    .proj-item.drag-over{border-color:var(--cyan);box-shadow:0 0 20px var(--cyan-glow);background:var(--card2)}
+    .proj-item.dragging{opacity:.4}
+    .drag-handle{
+      color:var(--muted);font-size:1.1rem;cursor:grab;padding:.2rem .4rem;
+      transition:color .2s;flex-shrink:0;
+    }
+    .drag-handle:hover{color:var(--cyan)}
+    .proj-thumb{
+      width:64px;height:48px;border-radius:8px;overflow:hidden;flex-shrink:0;
+      border:1px solid var(--border);
+    }
+    .proj-thumb img{width:100%;height:100%;object-fit:cover;filter:brightness(.85)}
+    .proj-info{flex:1;min-width:0}
+    .proj-item-title{font-size:.92rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .proj-item-meta{display:flex;align-items:center;gap:.5rem;margin-top:.2rem;flex-wrap:wrap}
+    .pi-tag{font-size:.65rem;padding:.15rem .5rem;border-radius:100px;font-weight:600;text-transform:uppercase;letter-spacing:.3px}
+    .featured-badge{background:rgba(249,115,22,.12);color:var(--orange);border:1px solid rgba(249,115,22,.3)}
+    .proj-item-actions{display:flex;gap:.4rem;flex-shrink:0}
+    .act-btn{
+      width:34px;height:34px;border-radius:8px;border:1px solid var(--border);
+      background:transparent;color:var(--muted);font-size:.8rem;
+      cursor:pointer;display:flex;align-items:center;justify-content:center;
+      transition:all .2s;
+    }
+    .act-edit:hover{border-color:var(--cyan);color:var(--cyan)}
+    .act-del:hover{border-color:var(--red);color:var(--red)}
+    .act-feat:hover{border-color:var(--orange);color:var(--orange)}
+    .act-feat.active{border-color:var(--orange);color:var(--orange);background:rgba(249,115,22,.1)}
+    .empty-state{
+      text-align:center;padding:4rem 2rem;color:var(--muted);
+      border:1px dashed var(--border);border-radius:14px;
+    }
+    .empty-state i{font-size:2rem;margin-bottom:1rem;display:block;color:var(--border)}
+    .order-hint{
+      text-align:center;color:var(--muted);font-size:.8rem;padding:.75rem;
+      background:rgba(0,229,255,.03);border:1px solid var(--border);border-radius:10px;margin-bottom:1.2rem;
+    }
+    .order-hint i{color:var(--cyan);margin-right:.3rem}
+
+    /* ── MODAL ── */
+    #modal-overlay{
+      position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(6px);
+      z-index:500;display:flex;align-items:center;justify-content:center;padding:1rem;
+      display:none;
+    }
+    #modal-overlay.open{display:flex}
+    .modal-card{
+      background:var(--card);border:1px solid var(--border);border-radius:22px;
+      width:100%;max-width:680px;max-height:90vh;overflow-y:auto;
+      box-shadow:0 40px 80px rgba(0,0,0,.6);
+    }
+    .modal-header{
+      padding:1.5rem 1.8rem 1rem;border-bottom:1px solid var(--border);
+      display:flex;align-items:center;justify-content:space-between;
+      position:sticky;top:0;background:var(--card);z-index:1;
+    }
+    .modal-title{font-size:1.1rem;font-weight:700}
+    .modal-close{
+      width:32px;height:32px;border-radius:8px;border:1px solid var(--border);
+      background:transparent;color:var(--muted);cursor:pointer;font-size:.9rem;
+      display:flex;align-items:center;justify-content:center;transition:all .2s;
+    }
+    .modal-close:hover{border-color:var(--red);color:var(--red)}
+    .modal-body{padding:1.5rem 1.8rem}
+    .form-group{margin-bottom:1.2rem}
+    .form-label{display:block;font-size:.78rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:.5rem}
+    .form-input,.form-textarea,.form-select{
+      width:100%;background:var(--surface);border:1px solid var(--border);
+      border-radius:10px;padding:.75rem 1rem;font-size:.9rem;color:var(--text);
+      font-family:var(--font);outline:none;transition:border-color .2s;
+    }
+    .form-input:focus,.form-textarea:focus,.form-select:focus{border-color:var(--cyan)}
+    .form-textarea{resize:vertical;min-height:90px;line-height:1.6}
+    .form-select{appearance:none;cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%2364748b' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:calc(100% - 12px) 50%;background-size:12px}
+    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+    .img-preview{
+      width:100%;height:140px;border-radius:10px;object-fit:cover;
+      border:1px solid var(--border);margin-top:.5rem;display:none;
+      filter:brightness(.85) saturate(1.1);
+    }
+    .img-preview.show{display:block}
+
+    /* Tags editor */
+    .tags-container{display:flex;flex-direction:column;gap:.5rem}
+    .tag-row{display:flex;align-items:center;gap:.5rem}
+    .tag-row input{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:.6rem .8rem;font-size:.85rem;color:var(--text);font-family:var(--font);outline:none;transition:border-color .2s}
+    .tag-row input:focus{border-color:var(--cyan)}
+    .color-btns{display:flex;gap:.3rem}
+    .color-btn{
+      width:26px;height:26px;border-radius:6px;border:2px solid transparent;
+      cursor:pointer;font-size:.65rem;font-weight:700;color:#fff;
+      display:flex;align-items:center;justify-content:center;transition:border-color .15s;
+    }
+    .color-btn.selected{border-color:#fff}
+    .color-btn[data-c=c]{background:rgba(0,229,255,.7)}
+    .color-btn[data-c=p]{background:rgba(168,85,247,.7)}
+    .color-btn[data-c=o]{background:rgba(249,115,22,.7)}
+    .color-btn[data-c=g]{background:rgba(16,185,129,.7)}
+    .tag-remove{width:26px;height:26px;background:transparent;border:1px solid var(--border);border-radius:6px;color:var(--muted);cursor:pointer;font-size:.75rem;display:flex;align-items:center;justify-content:center;transition:all .15s;flex-shrink:0}
+    .tag-remove:hover{border-color:var(--red);color:var(--red)}
+    .add-tag-btn{
+      display:inline-flex;align-items:center;gap:.4rem;
+      background:transparent;border:1px dashed var(--border);border-radius:8px;
+      padding:.5rem 1rem;font-size:.8rem;color:var(--muted);cursor:pointer;transition:all .2s;margin-top:.2rem;
+    }
+    .add-tag-btn:hover{border-color:var(--cyan);color:var(--cyan)}
+
+    /* Metric toggle */
+    .metric-toggle{display:flex;align-items:center;gap:.6rem;margin-bottom:.8rem;cursor:pointer}
+    .toggle-sw{width:38px;height:22px;background:var(--surface);border:1px solid var(--border);border-radius:100px;position:relative;transition:background .2s}
+    .toggle-sw::after{content:'';position:absolute;width:16px;height:16px;background:var(--muted);border-radius:50%;top:2px;left:2px;transition:all .2s}
+    .toggle-sw.on{background:rgba(0,229,255,.2);border-color:var(--cyan)}
+    .toggle-sw.on::after{background:var(--cyan);left:18px}
+    .metric-fields{display:grid;grid-template-columns:1fr 2fr;gap:.8rem}
+
+    /* Complexity picker */
+    .complexity-picker{display:flex;gap:.5rem;align-items:center}
+    .cpx-dot{
+      width:24px;height:24px;border-radius:6px;background:rgba(255,255,255,.06);
+      border:1px solid var(--border);cursor:pointer;transition:all .15s;
+    }
+    .cpx-dot.filled{background:var(--orange);border-color:var(--orange)}
+
+    /* Featured toggle */
+    .featured-row{display:flex;align-items:center;justify-content:space-between;
+      background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:.75rem 1rem}
+    .featured-label{font-size:.88rem;font-weight:600}
+    .featured-desc{font-size:.75rem;color:var(--muted)}
+
+    /* Modal footer */
+    .modal-footer{
+      padding:1.2rem 1.8rem;border-top:1px solid var(--border);
+      display:flex;justify-content:flex-end;gap:.7rem;
+      position:sticky;bottom:0;background:var(--card);
+    }
+    .btn-cancel{background:var(--surface);color:var(--muted);border:1px solid var(--border);border-radius:8px;padding:.65rem 1.4rem;font-size:.85rem;font-weight:600;cursor:pointer;transition:all .2s}
+    .btn-cancel:hover{border-color:var(--border);color:var(--text)}
+    .btn-save{background:var(--cyan);color:var(--bg);border:none;border-radius:8px;padding:.65rem 1.6rem;font-size:.85rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all .2s}
+    .btn-save:hover{box-shadow:0 0 20px var(--cyan-glow)}
+
+    /* Confirm dialog */
+    #confirm-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(4px);z-index:600;display:none;align-items:center;justify-content:center}
+    #confirm-overlay.open{display:flex}
+    .confirm-card{background:var(--card);border:1px solid rgba(239,68,68,.3);border-radius:18px;padding:2rem;max-width:380px;text-align:center;box-shadow:0 30px 60px rgba(0,0,0,.5)}
+    .confirm-card i{font-size:2rem;color:var(--red);margin-bottom:1rem;display:block}
+    .confirm-card h3{font-size:1.1rem;font-weight:700;margin-bottom:.5rem}
+    .confirm-card p{color:var(--muted);font-size:.88rem;margin-bottom:1.5rem}
+    .confirm-btns{display:flex;gap:.8rem;justify-content:center}
+    .btn-confirm-del{background:var(--red);color:#fff;border:none;border-radius:8px;padding:.6rem 1.6rem;font-size:.85rem;font-weight:700;cursor:pointer;transition:opacity .2s}
+    .btn-confirm-del:hover{opacity:.85}
+    .btn-confirm-cancel{background:var(--surface);color:var(--text);border:1px solid var(--border);border-radius:8px;padding:.6rem 1.4rem;font-size:.85rem;font-weight:600;cursor:pointer}
+
+    /* Export modal */
+    #export-overlay{position:fixed;inset:0;background:rgba(0,0,0,.8);backdrop-filter:blur(6px);z-index:600;display:none;align-items:center;justify-content:center;padding:1rem}
+    #export-overlay.open{display:flex}
+    .export-card{background:var(--card);border:1px solid var(--border);border-radius:22px;width:100%;max-width:600px;padding:2rem;box-shadow:0 40px 80px rgba(0,0,0,.6)}
+    .export-card h3{font-size:1.2rem;font-weight:700;margin-bottom:.5rem}
+    .export-card p{color:var(--muted);font-size:.88rem;margin-bottom:1.5rem;line-height:1.7}
+    .export-steps{list-style:none;display:flex;flex-direction:column;gap:.7rem;margin-bottom:1.8rem}
+    .export-steps li{display:flex;align-items:flex-start;gap:.75rem;font-size:.88rem;color:var(--muted)}
+    .step-num{width:24px;height:24px;border-radius:50%;background:rgba(0,229,255,.12);border:1px solid rgba(0,229,255,.3);color:var(--cyan);font-size:.72rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:.05em}
+    .export-steps strong{color:var(--text)}
+    .export-btns{display:flex;gap:.8rem;flex-wrap:wrap}
+    .btn-download{background:var(--cyan);color:var(--bg);border:none;border-radius:8px;padding:.7rem 1.6rem;font-size:.85rem;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:.5rem;transition:all .2s}
+    .btn-download:hover{box-shadow:0 0 20px var(--cyan-glow)}
+    .export-fallback{display:none;margin-top:1rem}
+    .export-fallback textarea{width:100%;height:120px;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:.75rem;font-family:var(--mono);font-size:.72rem;color:var(--muted);resize:none}
+
+    /* Change PW modal */
+    #pw-change-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(4px);z-index:600;display:none;align-items:center;justify-content:center;padding:1rem}
+    #pw-change-overlay.open{display:flex}
+    .pw-change-card{background:var(--card);border:1px solid var(--border);border-radius:18px;width:100%;max-width:400px;padding:2rem;box-shadow:0 30px 60px rgba(0,0,0,.5)}
+    .pw-change-card h3{font-size:1.1rem;font-weight:700;margin-bottom:1.5rem}
+    .pw-change-card .form-group{margin-bottom:1rem}
+
+    /* Toast */
+    #toast{
+      position:fixed;bottom:2rem;right:2rem;z-index:9999;
+      background:var(--card);border:1px solid var(--border);border-radius:12px;
+      padding:.8rem 1.3rem;font-size:.85rem;font-weight:600;
+      display:flex;align-items:center;gap:.6rem;
+      transform:translateY(120px);opacity:0;
+      transition:transform .3s,opacity .3s;
+      max-width:320px;box-shadow:0 20px 40px rgba(0,0,0,.4);
+    }
+    #toast.show{transform:translateY(0);opacity:1}
+    #toast.success{border-color:rgba(16,185,129,.4);color:var(--green)}
+    #toast.info{border-color:var(--border);color:var(--cyan)}
+    #toast.error{border-color:rgba(239,68,68,.4);color:var(--red)}
+
+    /* Responsive */
+    @media(max-width:600px){
+      .form-row{grid-template-columns:1fr}
+      .metric-fields{grid-template-columns:1fr}
+      #admin-header{padding:.8rem 1rem}
+      #admin-main{padding:1rem}
+    }
+  </style>
+</head>
+<body>
+
+<!-- ─── LOGIN SCREEN ─── -->
+<div id="login-screen">
+  <div class="login-wrap">
+    <div class="login-logo">[KJ]<em> // admin</em></div>
+    <h2 id="login-title">Portfolio Admin</h2>
+    <p id="login-sub">Enter your password to manage projects.</p>
+    <input type="password" id="pw-input" placeholder="Password" autocomplete="current-password">
+    <input type="password" id="pw-input-confirm" placeholder="Confirm password" autocomplete="new-password" style="display:none">
+    <button class="btn-cyan" id="pw-btn">Enter Admin</button>
+    <div class="err-msg" id="pw-err">Incorrect password. Try again.</div>
+  </div>
+</div>
+
+<!-- ─── ADMIN PANEL ─── -->
+<div id="admin-panel" style="display:none">
+
+  <header id="admin-header">
+    <div class="ah-left">
+      <div class="ah-logo">[KJ]<em> // portfolio</em></div>
+      <span class="admin-badge"><i class="fas fa-lock"></i> Admin Mode</span>
+    </div>
+    <div class="ah-right">
+      <button class="btn-sm btn-add" onclick="openModal()"><i class="fas fa-plus"></i> Add Project</button>
+      <button class="btn-sm btn-export" onclick="openExportModal()"><i class="fas fa-download"></i> Export HTML</button>
+      <button class="btn-sm btn-preview" onclick="window.open('index.html','_blank')"><i class="fas fa-eye"></i> Preview</button>
+      <button class="btn-sm btn-pw" onclick="openPWChange()"><i class="fas fa-key"></i></button>
+      <button class="btn-sm btn-logout" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+    </div>
+  </header>
+
+  <main id="admin-main">
+    <div class="admin-section-title">
+      <i class="fas fa-microchip"></i> Projects &nbsp;<span id="proj-count">0</span> total
+    </div>
+    <div class="order-hint"><i class="fas fa-grip-vertical"></i> Drag the handle to reorder — first project becomes Featured (full-width)</div>
+    <div id="proj-list"></div>
+  </main>
+
+</div>
+
+<!-- ─── ADD / EDIT MODAL ─── -->
+<div id="modal-overlay">
+  <div class="modal-card">
+    <div class="modal-header">
+      <span class="modal-title" id="modal-title">Add Project</span>
+      <button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+
+      <div class="form-row">
+        <div class="form-group" style="grid-column:1/-1">
+          <label class="form-label">Project Title</label>
+          <input type="text" class="form-input" id="f-title" placeholder="e.g. Bed of Nails V3 — Test Fixture">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="featured-row">
+          <div>
+            <div class="featured-label">Featured Project</div>
+            <div class="featured-desc">Spans the full grid width — use for your best work</div>
+          </div>
+          <div class="toggle-sw" id="featured-toggle" onclick="toggleFeatured()"></div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Category</label>
+          <input type="text" class="form-input" id="f-category" placeholder="e.g. PCB Design & Validation">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Category Icon <span style="color:var(--muted);font-weight:400">(FA class)</span></label>
+          <select class="form-select" id="f-icon">
+            <option value="fa-microchip">⚡ fa-microchip (PCB/Hardware)</option>
+            <option value="fa-bolt">⚡ fa-bolt (Power)</option>
+            <option value="fa-code">💻 fa-code (Software)</option>
+            <option value="fa-terminal">🖥 fa-terminal (Dev)</option>
+            <option value="fa-satellite">🛰 fa-satellite (Space)</option>
+            <option value="fa-industry">🏭 fa-industry (Commercial)</option>
+            <option value="fa-book">📖 fa-book (Docs)</option>
+            <option value="fa-network-wired">🔌 fa-network-wired (Network)</option>
+            <option value="fa-flask">🔬 fa-flask (Lab)</option>
+            <option value="fa-robot">🤖 fa-robot (Robotics)</option>
+            <option value="fa-brain">🧠 fa-brain (AI/ML)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Image URL</label>
+        <input type="text" class="form-input" id="f-image" placeholder="https://... (Google Drive thumbnail or direct image URL)" oninput="previewImg()">
+        <img class="img-preview" id="img-preview" alt="Preview">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Description</label>
+        <textarea class="form-textarea" id="f-desc" placeholder="2–4 sentences describing what you built and what impact it had..."></textarea>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Tags <span style="color:var(--muted);font-weight:400">(up to 4)</span></label>
+        <div class="tags-container" id="tags-container"></div>
+        <button class="add-tag-btn" onclick="addTagRow()" id="add-tag-btn"><i class="fas fa-plus"></i> Add Tag</button>
+      </div>
+
+      <div class="form-group">
+        <div class="metric-toggle" onclick="toggleMetric()">
+          <div class="toggle-sw" id="metric-toggle"></div>
+          <span style="font-size:.85rem;font-weight:600">Show metric badge</span>
+          <span style="font-size:.78rem;color:var(--muted);margin-left:.3rem">(e.g. "100% tests automated")</span>
+        </div>
+        <div id="metric-fields" class="metric-fields" style="display:none">
+          <div>
+            <select class="form-select" id="f-metric-icon">
+              <option value="fa-bolt">⚡ Bolt</option>
+              <option value="fa-chart-line">📈 Chart</option>
+              <option value="fa-clock">⏱ Clock</option>
+              <option value="fa-shield-alt">🛡 Shield</option>
+              <option value="fa-check-circle">✅ Check</option>
+              <option value="fa-fire">🔥 Fire</option>
+              <option value="fa-star">⭐ Star</option>
+              <option value="fa-microchip">⚙️ Chip</option>
+              <option value="fa-solar-panel">☀️ Solar</option>
+            </select>
+          </div>
+          <div>
+            <input type="text" class="form-input" id="f-metric-text" placeholder="e.g. 100% termination checks automated">
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Project Page Link</label>
+          <input type="text" class="form-input" id="f-link" placeholder="e.g. bed_of_nail.html or https://...">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Complexity (1–5)</label>
+          <div class="complexity-picker" id="complexity-picker">
+            <div class="cpx-dot" data-v="1" onclick="setComplexity(1)"></div>
+            <div class="cpx-dot" data-v="2" onclick="setComplexity(2)"></div>
+            <div class="cpx-dot" data-v="3" onclick="setComplexity(3)"></div>
+            <div class="cpx-dot" data-v="4" onclick="setComplexity(4)"></div>
+            <div class="cpx-dot" data-v="5" onclick="setComplexity(5)"></div>
+            <span style="font-size:.78rem;color:var(--muted);margin-left:.5rem" id="cpx-label">3 / 5</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+      <button class="btn-save" onclick="saveProject()"><i class="fas fa-save"></i> Save Project</button>
+    </div>
+  </div>
+</div>
+
+<!-- ─── CONFIRM DELETE ─── -->
+<div id="confirm-overlay">
+  <div class="confirm-card">
+    <i class="fas fa-trash-alt"></i>
+    <h3>Delete Project?</h3>
+    <p id="confirm-msg">This will remove the project from your list. You can add it back later.</p>
+    <div class="confirm-btns">
+      <button class="btn-confirm-cancel" onclick="closeConfirm()">Cancel</button>
+      <button class="btn-confirm-del" id="confirm-del-btn">Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- ─── EXPORT MODAL ─── -->
+<div id="export-overlay">
+  <div class="export-card">
+    <h3><i class="fas fa-rocket" style="color:var(--cyan);margin-right:.5rem"></i>Export & Go Live</h3>
+    <p>This downloads an updated <strong>index.html</strong> with your current project list baked in. Push it to GitHub and your live site updates instantly.</p>
+    <ol class="export-steps">
+      <li><div class="step-num">1</div><span>Click <strong>Download index.html</strong> below</span></li>
+      <li><div class="step-num">2</div><span>Replace the <strong>index.html</strong> in your portfolio folder with the downloaded file</span></li>
+      <li><div class="step-num">3</div><span>Run: <code style="background:var(--surface);padding:.1rem .4rem;border-radius:4px;font-size:.82rem;color:var(--cyan)">git add . && git commit -m "Update projects" && git push</code></span></li>
+    </ol>
+    <div class="export-btns">
+      <button class="btn-download" onclick="doExport()"><i class="fas fa-download"></i> Download index.html</button>
+      <button class="btn-cancel" onclick="closeExportModal()">Close</button>
+    </div>
+    <div class="export-fallback" id="export-fallback">
+      <p style="font-size:.8rem;color:var(--orange);margin-bottom:.5rem"><i class="fas fa-exclamation-triangle"></i> Auto-download unavailable — copy the HTML below and paste it between the <code>&lt;!-- PROJECTS-START --&gt;</code> and <code>&lt;!-- PROJECTS-END --&gt;</code> markers in your index.html:</p>
+      <textarea id="export-fallback-text" readonly></textarea>
+      <button class="btn-download" onclick="copyExportText()" style="margin-top:.6rem;background:var(--purple)"><i class="fas fa-copy"></i> Copy to Clipboard</button>
+    </div>
+  </div>
+</div>
+
+<!-- ─── CHANGE PASSWORD ─── -->
+<div id="pw-change-overlay">
+  <div class="pw-change-card">
+    <h3><i class="fas fa-key" style="color:var(--orange);margin-right:.5rem"></i>Change Password</h3>
+    <div class="form-group">
+      <label class="form-label">Current Password</label>
+      <input type="password" class="form-input" id="pw-old" placeholder="Current password">
+    </div>
+    <div class="form-group">
+      <label class="form-label">New Password</label>
+      <input type="password" class="form-input" id="pw-new" placeholder="New password">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Confirm New Password</label>
+      <input type="password" class="form-input" id="pw-new2" placeholder="Confirm new password">
+    </div>
+    <div class="err-msg" id="pw-change-err"></div>
+    <div style="display:flex;gap:.7rem;margin-top:1.2rem">
+      <button class="btn-cancel" style="flex:1" onclick="closePWChange()">Cancel</button>
+      <button class="btn-save" style="flex:1" onclick="changePassword()">Update Password</button>
+    </div>
+  </div>
+</div>
+
+<!-- ─── TOAST ─── -->
+<div id="toast"></div>
+
+<script>
+// ═══════════════════════════════════════════════════════
+// DEFAULT PROJECTS (mirrors current index.html)
+// ═══════════════════════════════════════════════════════
+const DEFAULT_PROJECTS = [
+  {
+    id:'p1', featured:true,
+    title:'Bed of Nails V3 — Test Fixture',
+    category:'Hardware Validation & PCB Design', icon:'fa-microchip',
+    image:'https://drive.google.com/thumbnail?id=1wKanGJe3JNhrho25JFkWqPenoO8fvS0U&sz=w1200',
+    tags:[{l:'PCB Design',c:'c'},{l:'Altium',c:'p'},{l:'Python',c:'o'},{l:'LTSpice',c:'g'}],
+    desc:'Spearheaded the full hardware lifecycle of a 2-layer test fixture at Electrans Technology. Progressed from LTSpice simulation and breadboard prototyping to Altium layout. Engineered a custom window comparator and Python validation scripts to automate 100% of termination checks — zero defects in shipped hardware.',
+    metric:{icon:'fa-bolt',text:'100% termination checks automated'},
+    link:'bed_of_nail.html', complexity:4
+  },
+  {
+    id:'p2', featured:false,
+    title:'Buck Converter Simulation',
+    category:'Simulation & Power Electronics', icon:'fa-bolt',
+    image:'https://www.analog.com/en/_/media/analog/en/evaluation-board-images/images/dc1895a-4.gif',
+    tags:[{l:'LTSpice',c:'g'},{l:'Power Electronics',c:'c'}],
+    desc:'High-fidelity LTSpice digital twin validating power efficiency, transient response, and stability. Achieved 84.8% power conversion efficiency with only 33mV (1%) voltage undershoot and ~20µs settling time under heavy load.',
+    metric:{icon:'fa-chart-line',text:'84.8% power conversion efficiency'},
+    link:'buck_converter.html', complexity:3
+  },
+  {
+    id:'p3', featured:false,
+    title:'OptiBOM Automation',
+    category:'Full-Stack Development & Procurement', icon:'fa-code',
+    image:'https://drive.google.com/thumbnail?id=1I5PhdtGdvVi-_GY5KUlPzf_DXpnJo0-z&sz=w800',
+    tags:[{l:'Node.js',c:'o'},{l:'REST API',c:'p'},{l:'Full-Stack',c:'c'}],
+    desc:'Hybrid procurement tool integrating Digi-Key/Mouser APIs via Node.js and Google Apps Script. Automates stock validation and EOL detection — cut manual BOM analysis time by 90%+ across production workflows.',
+    metric:{icon:'fa-clock',text:'90%+ manual time eliminated'},
+    link:'optibom.html', complexity:4
+  },
+  {
+    id:'p4', featured:false,
+    title:'ETL CAN Hitch — Datasheet',
+    category:'Commercial Product Launch', icon:'fa-industry',
+    image:'https://drive.google.com/thumbnail?id=1qvg4v8J0nKFsNL8eiBpOLwArg9dKgDT9&sz=w800',
+    tags:[{l:'CAN / J1939',c:'c'},{l:'Hardware Validation',c:'p'}],
+    desc:'Authored the technical datasheet and performed electrical validation for a J1939 CAN Bridge now retailed on DigiKey. Verified ±58V fault protection specs, enabling commercial customer integration.',
+    metric:{icon:'fa-shield-alt',text:'±58V fault protection verified'},
+    link:'ecrb_datasheet.html', complexity:3
+  },
+  {
+    id:'p5', featured:false,
+    title:'RescueTouch Emergency System',
+    category:'Embedded Systems', icon:'fa-microchip',
+    image:'https://m.media-amazon.com/images/I/61DX7isVBBL._UF894,1000_QL80_.jpg',
+    tags:[{l:'STM32',c:'o'},{l:'Embedded C++',c:'c'},{l:'UART',c:'p'}],
+    desc:'Two-board STM32 emergency communication system with KiCad schematics and C++ firmware. Established reliable UART communication between boards for critical emergency signalling scenarios.',
+    metric:null, link:'rescue_touch.html', complexity:3
+  },
+  {
+    id:'p6', featured:false,
+    title:'Solar Cell Board Assembly',
+    category:'PCB Assembly & CubeSat', icon:'fa-satellite',
+    image:'https://nanoavionics.com/wp-content/uploads/2025/04/nanoavionics-smallsat-small-satellite-microsatellite-aluminium-honeycomb-carbon-fiber-double-deployable-solar-panels.jpg',
+    tags:[{l:'PCB Assembly',c:'g'},{l:'CubeSat',c:'c'}],
+    desc:'Manual assembly and soldering of a solar power PCB for the Orbital CubeSat team. Validated physical performance metrics against LTSpice simulation models through hardware-in-the-loop testing.',
+    metric:null, link:'solar_board.html', complexity:2
+  },
+  {
+    id:'p7', featured:false,
+    title:'Snake Cube Puzzle Manual',
+    category:'Technical Communication', icon:'fa-book',
+    image:'https://www.mastermindtoys.com/cdn/shop/files/110315_1_1200x.jpg?v=1742530275',
+    tags:[{l:'Technical Docs',c:'p'},{l:'Visual Design',c:'o'}],
+    desc:'User-friendly visual manual for the 3×3 snake cube puzzle. Focused on clear technical communication with step-by-step diagrammatic instructions designed for a general, non-technical audience.',
+    metric:null, link:'cube_manual.html', complexity:2
+  }
+];
+
+// ═══════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════
+let editingId = null;
+let currentComplexity = 3;
+let featuredOn = false;
+let metricOn = false;
+let pendingDeleteId = null;
+
+// ═══════════════════════════════════════════════════════
+// STORAGE
+// ═══════════════════════════════════════════════════════
+function getProjects() {
+  const d = localStorage.getItem('kj_projects');
+  return d ? JSON.parse(d) : JSON.parse(JSON.stringify(DEFAULT_PROJECTS));
+}
+function saveProjects(arr) { localStorage.setItem('kj_projects', JSON.stringify(arr)); }
+function uid() { return 'p' + Date.now() + Math.random().toString(36).slice(2,6); }
+
+// ═══════════════════════════════════════════════════════
+// PASSWORD (SHA-256 via Web Crypto)
+// ═══════════════════════════════════════════════════════
+async function hashPW(pw) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(pw));
+  return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2,'0')).join('');
+}
+function getStoredHash() { return localStorage.getItem('kj_pw_hash'); }
+function setHash(h) { localStorage.setItem('kj_pw_hash', h); }
+
+async function initLogin() {
+  const hash = getStoredHash();
+  if (!hash) {
+    // First-time setup
+    document.getElementById('login-title').textContent = 'Create Your Password';
+    document.getElementById('login-sub').textContent = 'Set a password to protect your admin panel.';
+    document.getElementById('pw-input').placeholder = 'Choose a password';
+    document.getElementById('pw-input-confirm').style.display = 'block';
+    document.getElementById('pw-btn').textContent = 'Create Password';
+  }
+  document.getElementById('pw-input').focus();
+  document.getElementById('pw-input').addEventListener('keydown', e => { if (e.key==='Enter') doLogin(); });
+  document.getElementById('pw-input-confirm').addEventListener('keydown', e => { if (e.key==='Enter') doLogin(); });
+  document.getElementById('pw-btn').addEventListener('click', doLogin);
+}
+
+async function doLogin() {
+  const pw = document.getElementById('pw-input').value;
+  const confirm = document.getElementById('pw-input-confirm').value;
+  const err = document.getElementById('pw-err');
+  if (!pw) return;
+  const hash = getStoredHash();
+
+  if (!hash) {
+    // First time: create password
+    if (pw.length < 4) { err.textContent = 'Password must be at least 4 characters.'; err.classList.add('show'); return; }
+    if (pw !== confirm) { err.textContent = 'Passwords do not match.'; err.classList.add('show'); return; }
+    const h = await hashPW(pw);
+    setHash(h);
+    enterAdmin();
+  } else {
+    const h = await hashPW(pw);
+    if (h === hash) { enterAdmin(); }
+    else { err.classList.add('show'); document.getElementById('pw-input').value = ''; document.getElementById('pw-input').focus(); }
+  }
+}
+
+function enterAdmin() {
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('admin-panel').style.display = 'block';
+  renderProjectList();
+}
+function logout() {
+  document.getElementById('admin-panel').style.display = 'none';
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('pw-input').value = '';
+  document.getElementById('pw-input-confirm').value = '';
+  document.getElementById('pw-err').classList.remove('show');
+}
+
+// ═══════════════════════════════════════════════════════
+// PROJECT LIST RENDER
+// ═══════════════════════════════════════════════════════
+function renderProjectList() {
+  const projects = getProjects();
+  document.getElementById('proj-count').textContent = projects.length;
+  const list = document.getElementById('proj-list');
+
+  if (projects.length === 0) {
+    list.innerHTML = `<div class="empty-state"><i class="fas fa-inbox"></i><p>No projects yet.<br>Click <strong>+ Add Project</strong> to get started.</p></div>`;
+    return;
+  }
+
+  list.innerHTML = projects.map((p, idx) => {
+    const tagsHtml = p.tags.slice(0,3).map(t => `<span class="pi-tag tag-${t.c}" style="background:rgba(${tagRGB(t.c)},.1);color:${tagColor(t.c)};border:1px solid rgba(${tagRGB(t.c)},.25)">${t.l}</span>`).join('');
+    return `
+    <div class="proj-item" id="item-${p.id}" draggable="true"
+      ondragstart="onDragStart(event,'${p.id}')"
+      ondragover="onDragOver(event,'${p.id}')"
+      ondrop="onDrop(event,'${p.id}')"
+      ondragend="onDragEnd(event)">
+      <div class="drag-handle" title="Drag to reorder"><i class="fas fa-grip-vertical"></i></div>
+      <div class="proj-thumb"><img src="${p.image}" alt="" onerror="this.style.background='var(--surface)'"></div>
+      <div class="proj-info">
+        <div class="proj-item-title">${escH(p.title)}</div>
+        <div class="proj-item-meta">
+          ${p.featured ? '<span class="pi-tag featured-badge"><i class="fas fa-star"></i> Featured</span>' : ''}
+          ${tagsHtml}
+        </div>
+      </div>
+      <div class="proj-item-actions">
+        <button class="act-btn act-feat ${p.featured ? 'active' : ''}" title="Toggle featured" onclick="toggleFeaturedFor('${p.id}')"><i class="fas fa-star"></i></button>
+        <button class="act-btn act-edit" title="Edit" onclick="openModal('${p.id}')"><i class="fas fa-pencil-alt"></i></button>
+        <button class="act-btn act-del" title="Delete" onclick="askDelete('${p.id}','${escH(p.title)}')"><i class="fas fa-trash-alt"></i></button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function tagColor(c) { return c==='c'?'#00e5ff':c==='p'?'#a855f7':c==='o'?'#f97316':'#10b981'; }
+function tagRGB(c)   { return c==='c'?'0,229,255':c==='p'?'168,85,247':c==='o'?'249,115,22':'16,185,129'; }
+
+// ═══════════════════════════════════════════════════════
+// DRAG AND DROP
+// ═══════════════════════════════════════════════════════
+let dragSrcId = null;
+function onDragStart(e, id) {
+  dragSrcId = id;
+  e.dataTransfer.effectAllowed = 'move';
+  document.getElementById('item-'+id).classList.add('dragging');
+}
+function onDragOver(e, id) {
+  e.preventDefault(); e.dataTransfer.dropEffect = 'move';
+  document.querySelectorAll('.proj-item').forEach(el => el.classList.remove('drag-over'));
+  document.getElementById('item-'+id).classList.add('drag-over');
+}
+function onDrop(e, targetId) {
+  e.preventDefault();
+  if (dragSrcId === targetId) return;
+  const projects = getProjects();
+  const si = projects.findIndex(p => p.id === dragSrcId);
+  const ti = projects.findIndex(p => p.id === targetId);
+  const [moved] = projects.splice(si, 1);
+  projects.splice(ti, 0, moved);
+  saveProjects(projects);
+  renderProjectList();
+  showToast('Order updated!', 'success');
+}
+function onDragEnd(e) {
+  document.querySelectorAll('.proj-item').forEach(el => { el.classList.remove('dragging','drag-over'); });
+}
+
+// ═══════════════════════════════════════════════════════
+// FEATURED TOGGLE (from list)
+// ═══════════════════════════════════════════════════════
+function toggleFeaturedFor(id) {
+  const projects = getProjects();
+  const p = projects.find(p => p.id === id);
+  if (!p) return;
+  // Only one featured at a time
+  if (!p.featured) projects.forEach(q => q.featured = false);
+  p.featured = !p.featured;
+  saveProjects(projects);
+  renderProjectList();
+}
+
+// ═══════════════════════════════════════════════════════
+// ADD / EDIT MODAL
+// ═══════════════════════════════════════════════════════
+function openModal(id) {
+  editingId = id || null;
+  const modal = document.getElementById('modal-overlay');
+  modal.classList.add('open');
+  document.getElementById('modal-title').textContent = id ? 'Edit Project' : 'Add Project';
+
+  if (id) {
+    const p = getProjects().find(p => p.id === id);
+    if (!p) return;
+    document.getElementById('f-title').value = p.title;
+    document.getElementById('f-category').value = p.category;
+    document.getElementById('f-icon').value = p.icon;
+    document.getElementById('f-image').value = p.image;
+    document.getElementById('f-desc').value = p.desc;
+    document.getElementById('f-link').value = p.link;
+    featuredOn = p.featured;
+    currentComplexity = p.complexity;
+    metricOn = !!p.metric;
+    if (p.metric) {
+      document.getElementById('f-metric-icon').value = p.metric.icon;
+      document.getElementById('f-metric-text').value = p.metric.text;
+    }
+    setTagsFromData(p.tags);
+  } else {
+    document.getElementById('f-title').value = '';
+    document.getElementById('f-category').value = '';
+    document.getElementById('f-icon').value = 'fa-microchip';
+    document.getElementById('f-image').value = '';
+    document.getElementById('f-desc').value = '';
+    document.getElementById('f-link').value = '';
+    featuredOn = false;
+    currentComplexity = 3;
+    metricOn = false;
+    document.getElementById('f-metric-text').value = '';
+    setTagsFromData([]);
+  }
+  syncFeaturedUI(); syncComplexityUI(); syncMetricUI(); previewImg();
+}
+function closeModal() {
+  document.getElementById('modal-overlay').classList.remove('open');
+  document.getElementById('img-preview').classList.remove('show');
+  editingId = null;
+}
+
+function toggleFeatured() {
+  featuredOn = !featuredOn; syncFeaturedUI();
+}
+function syncFeaturedUI() {
+  const t = document.getElementById('featured-toggle');
+  featuredOn ? t.classList.add('on') : t.classList.remove('on');
+}
+function toggleMetric() {
+  metricOn = !metricOn; syncMetricUI();
+}
+function syncMetricUI() {
+  const t = document.getElementById('metric-toggle');
+  const f = document.getElementById('metric-fields');
+  metricOn ? t.classList.add('on') : t.classList.remove('on');
+  f.style.display = metricOn ? 'grid' : 'none';
+}
+function setComplexity(v) {
+  currentComplexity = v; syncComplexityUI();
+}
+function syncComplexityUI() {
+  document.querySelectorAll('.cpx-dot').forEach(d => {
+    parseInt(d.dataset.v) <= currentComplexity ? d.classList.add('filled') : d.classList.remove('filled');
+  });
+  document.getElementById('cpx-label').textContent = currentComplexity + ' / 5';
+}
+function previewImg() {
+  const url = document.getElementById('f-image').value.trim();
+  const img = document.getElementById('img-preview');
+  if (url) { img.src = url; img.classList.add('show'); }
+  else { img.classList.remove('show'); }
+}
+
+// Tag rows
+function setTagsFromData(tags) {
+  const c = document.getElementById('tags-container');
+  c.innerHTML = '';
+  tags.forEach(t => addTagRow(t));
+}
+function addTagRow(data) {
+  const c = document.getElementById('tags-container');
+  if (c.children.length >= 4) return;
+  const row = document.createElement('div');
+  row.className = 'tag-row';
+  const selColor = (data && data.c) ? data.c : 'c';
+  row.innerHTML = `
+    <input type="text" placeholder="Tag label" value="${data ? escH(data.l) : ''}">
+    <div class="color-btns">
+      ${['c','p','o','g'].map(col => `<button type="button" class="color-btn${col===selColor?' selected':''}" data-c="${col}" onclick="selectTagColor(this,'${col}')">${col.toUpperCase()}</button>`).join('')}
+    </div>
+    <button class="tag-remove" onclick="this.parentElement.remove();updateAddTagBtn()"><i class="fas fa-times"></i></button>`;
+  c.appendChild(row);
+  updateAddTagBtn();
+}
+function updateAddTagBtn() {
+  const c = document.getElementById('tags-container');
+  document.getElementById('add-tag-btn').style.display = c.children.length >= 4 ? 'none' : 'inline-flex';
+}
+function selectTagColor(btn, col) {
+  btn.closest('.tag-row').querySelectorAll('.color-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+}
+function getTagsFromForm() {
+  return [...document.getElementById('tags-container').children].map(row => ({
+    l: row.querySelector('input').value.trim(),
+    c: row.querySelector('.color-btn.selected')?.dataset.c || 'c'
+  })).filter(t => t.l);
+}
+
+function saveProject() {
+  const title = document.getElementById('f-title').value.trim();
+  if (!title) { showToast('Please enter a project title.', 'error'); return; }
+  const projects = getProjects();
+  const data = {
+    id: editingId || uid(),
+    title,
+    category: document.getElementById('f-category').value.trim() || 'Project',
+    icon: document.getElementById('f-icon').value,
+    image: document.getElementById('f-image').value.trim(),
+    desc: document.getElementById('f-desc').value.trim(),
+    tags: getTagsFromForm(),
+    metric: metricOn ? { icon: document.getElementById('f-metric-icon').value, text: document.getElementById('f-metric-text').value.trim() } : null,
+    link: document.getElementById('f-link').value.trim() || '#',
+    complexity: currentComplexity,
+    featured: featuredOn
+  };
+  // Only one featured
+  if (data.featured) projects.forEach(p => { if (p.id !== data.id) p.featured = false; });
+  if (editingId) {
+    const idx = projects.findIndex(p => p.id === editingId);
+    if (idx !== -1) projects[idx] = data;
+  } else {
+    projects.push(data);
+  }
+  saveProjects(projects);
+  renderProjectList();
+  closeModal();
+  showToast(editingId ? 'Project updated!' : 'Project added!', 'success');
+}
+
+// ═══════════════════════════════════════════════════════
+// DELETE
+// ═══════════════════════════════════════════════════════
+function askDelete(id, title) {
+  pendingDeleteId = id;
+  document.getElementById('confirm-msg').textContent = `"${title}" will be removed from your list.`;
+  document.getElementById('confirm-overlay').classList.add('open');
+  document.getElementById('confirm-del-btn').onclick = () => {
+    const projects = getProjects().filter(p => p.id !== pendingDeleteId);
+    saveProjects(projects);
+    renderProjectList();
+    closeConfirm();
+    showToast('Project deleted.', 'info');
+  };
+}
+function closeConfirm() { document.getElementById('confirm-overlay').classList.remove('open'); }
+
+// ═══════════════════════════════════════════════════════
+// EXPORT HTML
+// ═══════════════════════════════════════════════════════
+function escH(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+function generateCardHTML(p) {
+  const tags = p.tags.map(t => `<span class="tag t${t.c}">${escH(t.l)}</span>`).join('');
+  const dots = [1,2,3,4,5].map(i => `<div class="dd${i<=p.complexity?' on':''}"></div>`).join('');
+  const metric = p.metric ? `\n          <div><span class="proj-metric"><i class="fas ${p.metric.icon}"></i> ${escH(p.metric.text)}</span></div>` : '';
+  return `      <article class="proj-card${p.featured?' featured':''} reveal">
+        <div class="proj-img">
+          <img src="${p.image}" alt="${escH(p.title)}">
+          <div class="proj-img-shade"></div>
+        </div>
+        <div class="proj-body">
+          <div class="tags">
+            ${tags}
+          </div>
+          <h3 class="proj-title">${escH(p.title)}</h3>
+          <p class="proj-desc">${escH(p.desc)}</p>${metric}
+          <div class="proj-foot">
+            <a href="${p.link}" class="proj-link">View Project <i class="fas fa-arrow-right"></i></a>
+            <div class="diff">
+              <span class="diff-lbl">Complexity</span>
+              ${dots}
+            </div>
+          </div>
+        </div>
+      </article>`;
+}
+
+function generateProjectsBlock() {
+  const projects = getProjects();
+  const cards = projects.map(generateCardHTML).join('\n\n');
+  return `    <!-- PROJECTS-START -->
+    <div class="proj-grid">\n\n${cards}\n\n    </div>
+    <!-- PROJECTS-END -->`;
+}
+
+function openExportModal() { document.getElementById('export-overlay').classList.add('open'); }
+function closeExportModal() {
+  document.getElementById('export-overlay').classList.remove('open');
+  document.getElementById('export-fallback').style.display = 'none';
+}
+
+async function doExport() {
+  const block = generateProjectsBlock();
+  try {
+    const resp = await fetch('index.html');
+    if (!resp.ok) throw new Error('fetch failed');
+    const html = await resp.text();
+    const updated = html.replace(/[ \t]*<!-- PROJECTS-START -->[\s\S]*?<!-- PROJECTS-END -->/,  block);
+    if (!updated.includes('<!-- PROJECTS-START -->')) throw new Error('markers not found');
+    const blob = new Blob([updated], {type:'text/html'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'index.html';
+    document.body.appendChild(a); a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    showToast('index.html downloaded — push to GitHub to go live!', 'success');
+  } catch(e) {
+    // Fallback: show textarea
+    document.getElementById('export-fallback').style.display = 'block';
+    document.getElementById('export-fallback-text').value = block;
+    showToast('Use the manual copy below instead.', 'info');
+  }
+}
+function copyExportText() {
+  const ta = document.getElementById('export-fallback-text');
+  ta.select(); document.execCommand('copy');
+  showToast('Copied to clipboard!', 'success');
+}
+
+// ═══════════════════════════════════════════════════════
+// CHANGE PASSWORD
+// ═══════════════════════════════════════════════════════
+function openPWChange() { document.getElementById('pw-change-overlay').classList.add('open'); }
+function closePWChange() {
+  document.getElementById('pw-change-overlay').classList.remove('open');
+  ['pw-old','pw-new','pw-new2'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('pw-change-err').classList.remove('show');
+}
+async function changePassword() {
+  const old = document.getElementById('pw-old').value;
+  const nw  = document.getElementById('pw-new').value;
+  const nw2 = document.getElementById('pw-new2').value;
+  const err = document.getElementById('pw-change-err');
+  err.classList.remove('show');
+  if (!old || !nw) { err.textContent = 'All fields are required.'; err.classList.add('show'); return; }
+  if (nw.length < 4) { err.textContent = 'New password must be at least 4 characters.'; err.classList.add('show'); return; }
+  if (nw !== nw2) { err.textContent = 'New passwords do not match.'; err.classList.add('show'); return; }
+  const oldHash = await hashPW(old);
+  if (oldHash !== getStoredHash()) { err.textContent = 'Current password is incorrect.'; err.classList.add('show'); return; }
+  setHash(await hashPW(nw));
+  closePWChange();
+  showToast('Password updated!', 'success');
+}
+
+// ═══════════════════════════════════════════════════════
+// TOAST
+// ═══════════════════════════════════════════════════════
+let toastTimer;
+function showToast(msg, type='info') {
+  const t = document.getElementById('toast');
+  t.className = `show ${type}`;
+  t.innerHTML = `<i class="fas ${type==='success'?'fa-check-circle':type==='error'?'fa-exclamation-circle':'fa-info-circle'}"></i> ${msg}`;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 3500);
+}
+
+// ═══════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════
+initLogin();
+</script>
+</body>
+</html>
