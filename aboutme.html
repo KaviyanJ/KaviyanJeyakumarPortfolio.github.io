@@ -169,6 +169,7 @@
 
 <!-- HERO -->
 <section id="about-hero">
+  <!-- ABOUTME-HERO-START -->
   <div class="ah-inner">
     <div class="reveal">
       <div class="ah-badge">Waterloo EE '29</div>
@@ -191,12 +192,14 @@
       <div class="corner-deco br"></div>
     </div>
   </div>
+  <!-- ABOUTME-HERO-END -->
 </section>
 
 <!-- ABOUT TEXT -->
 <section id="about-text">
   <div class="wrap">
     <div class="about-grid">
+      <!-- ABOUTME-BIO-START -->
       <div class="about-body reveal">
         <div class="sec-tag"><i class="fas fa-user-astronaut"></i> Biography</div>
         <h2 class="sec-title" style="margin-bottom:1.5rem">The Full <span class="hl">Story</span></h2>
@@ -240,6 +243,7 @@
           </div>
         </div>
       </div>
+      <!-- ABOUTME-BIO-END -->
     </div>
   </div>
 </section>
@@ -250,6 +254,7 @@
     <div class="sec-tag"><i class="fas fa-star"></i> What Drives Me</div>
     <h2 class="sec-title">Core <span class="hl">Values</span></h2>
     <div class="values-grid">
+      <!-- ABOUTME-VALUES-START -->
       <div class="val-card reveal">
         <div class="val-ico vic"><i class="fas fa-drafting-compass"></i></div>
         <h4>Hardware First</h4>
@@ -270,6 +275,7 @@
         <h4>Teach to Learn</h4>
         <p>Explaining complex electronics to 120+ campers taught me that the best way to master something is to break it down for someone else.</p>
       </div>
+      <!-- ABOUTME-VALUES-END -->
     </div>
   </div>
 </section>
@@ -277,6 +283,7 @@
 <!-- CONTACT FOOTER -->
 <section style="position:relative;z-index:1;border-top:1px solid var(--border)">
   <div class="con-foot">
+    <!-- ABOUTME-CONTACT-START -->
     <div class="con-foot-left">
       <h3>Ready to <span>build something</span>?</h3>
       <p>Open to Winter 2027 internship opportunities in hardware & embedded systems.</p>
@@ -289,6 +296,7 @@
         <a href="https://github.com/KaviyanJ" class="soc-btn" target="_blank"><i class="fab fa-github"></i></a>
       </div>
     </div>
+    <!-- ABOUTME-CONTACT-END -->
   </div>
 </section>
 
@@ -313,6 +321,61 @@ const pts=Array.from({length:130},()=>new P());
 const revs=document.querySelectorAll('.reveal');
 const check=()=>revs.forEach(el=>{if(el.getBoundingClientRect().top<innerHeight*.9)el.classList.add('up')});
 window.addEventListener('scroll',check,{passive:true});window.addEventListener('load',()=>{check();setTimeout(check,300)});check();
+
+// === ADMIN LIVE PREVIEW INJECT ===
+(function(){
+  function eh(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+  // Apply theme
+  try{
+    var a=JSON.parse(localStorage.getItem('kj_appearance')||'null');
+    if(a){
+      var keys={cyan:'--cyan',purple:'--purple',orange:'--orange',green:'--green',bg:'--bg',surface:'--surface',card:'--card',text:'--text',muted:'--muted'};
+      var vars=Object.keys(keys).map(function(k){return a[k]?keys[k]+':'+a[k]:null}).filter(Boolean);
+      if(a.font&&a.font!=='Inter')vars.push("--font:'"+a.font+"',system-ui,sans-serif");
+      var st=document.createElement('style');st.textContent=':root{'+vars.join(';')+'}';
+      document.head.appendChild(st);
+    }
+  }catch(e){}
+  // Apply about me data
+  try{
+    var am=JSON.parse(localStorage.getItem('kj_aboutme')||'null');
+    if(!am)return;
+    // Hero
+    var badge=document.querySelector('.ah-badge');if(badge&&am.badge)badge.textContent=am.badge;
+    var hl=document.querySelector('.ah-title .hl');if(hl&&am.nameHl)hl.textContent=am.nameHl;
+    var sub=document.querySelector('.ah-sub');if(sub&&am.subtitle)sub.textContent=am.subtitle;
+    var btns=document.querySelectorAll('.ah-btns a');
+    if(btns[0]&&am.btn1Text){btns[0].textContent=am.btn1Text;btns[0].href=am.btn1Link||'#'}
+    if(btns[1]&&am.btn2Text){btns[1].textContent=am.btn2Text;btns[1].href=am.btn2Link||'#'}
+    // Photo
+    var photoImg=document.querySelector('.photo-frame img');if(photoImg&&am.photo)photoImg.src=am.photo;
+    var photoBadge=document.querySelector('.photo-badge');if(photoBadge&&am.photoBadge)photoBadge.innerHTML='<i class="fas fa-map-marker-alt"></i> '+eh(am.photoBadge);
+    // Bio paragraphs
+    var aboutBody=document.querySelector('.about-body');
+    if(aboutBody&&am.bioParagraphs&&am.bioParagraphs.length){
+      var existingPs=aboutBody.querySelectorAll('p');existingPs.forEach(function(p){p.remove()});
+      am.bioParagraphs.forEach(function(txt){var p=document.createElement('p');p.innerHTML=txt;aboutBody.appendChild(p)});
+    }
+    // Facts
+    var funFacts=document.querySelector('.fun-facts');
+    if(funFacts&&am.facts&&am.facts.length){
+      funFacts.innerHTML=am.facts.map(function(f){return '<div class="fact-card"><div class="fact-ico">'+f.emoji+'</div><div class="fact-label">'+eh(f.label)+'</div><div class="fact-val">'+eh(f.val)+'</div></div>';}).join('');
+    }
+    // Values
+    var colorMap={c:'vic',p:'vip',o:'vio',g:'vig'};
+    var valGrid=document.querySelector('.values-grid');
+    if(valGrid&&am.values&&am.values.length){
+      valGrid.innerHTML=am.values.map(function(v){return '<div class="val-card reveal up"><div class="val-ico '+(colorMap[v.color]||'vic')+'"><i class="fas '+v.icon+'"></i></div><h4>'+eh(v.title)+'</h4><p>'+eh(v.desc)+'</p></div>';}).join('');
+    }
+    // Contact footer
+    var conHeading=document.querySelector('.con-foot-left h3');
+    if(conHeading&&am.conHeading)conHeading.innerHTML=am.conHeading.replace(/\?/,'<span>?</span>');
+    var conSub=document.querySelector('.con-foot-left p');if(conSub&&am.conSub)conSub.textContent=am.conSub;
+    var conInfos=document.querySelectorAll('.con-info a');
+    if(conInfos[0]&&am.email){conInfos[0].textContent=am.email;conInfos[0].href='mailto:'+am.email}
+    if(conInfos[1]&&am.phone){conInfos[1].textContent=am.phone;conInfos[1].href='tel:'+(am.phone||'').replace(/\D/g,'')}
+  }catch(e){}
+})();
 </script>
 </body>
 </html>

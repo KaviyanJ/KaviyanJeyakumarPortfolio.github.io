@@ -704,6 +704,7 @@
     <div class="sec-tag"><i class="fas fa-briefcase"></i> Experience</div>
     <h2 class="sec-title">Where I've <span class="hl">Worked</span></h2>
     <p class="sec-sub">Real engineering experience on shipped, commercial hardware.</p>
+    <!-- EXPERIENCE-START -->
     <div class="timeline">
 
       <div class="tl-item reveal">
@@ -744,6 +745,7 @@
       </div>
 
     </div>
+    <!-- EXPERIENCE-END -->
   </div>
 </section>
 
@@ -934,6 +936,36 @@ document.querySelector('.nav-logo').addEventListener('click', () => {
   _lt = setTimeout(() => _lc = 0, 1500);
   if (_lc >= 5) window.location.href = 'admin.html';
 });
+
+// === ADMIN LIVE PREVIEW INJECT ===
+// Reads localStorage set by admin panel and applies changes for instant preview
+(function() {
+  function eh(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+  // Apply theme
+  try {
+    var a=JSON.parse(localStorage.getItem('kj_appearance')||'null');
+    if(a){
+      var keys={cyan:'--cyan',purple:'--purple',orange:'--orange',green:'--green',bg:'--bg',surface:'--surface',card:'--card',text:'--text',muted:'--muted'};
+      var vars=Object.keys(keys).map(function(k){return a[k]?keys[k]+':'+a[k]:null}).filter(Boolean);
+      if(a.font&&a.font!=='Inter')vars.push("--font:'"+a.font+"',system-ui,sans-serif");
+      var st=document.createElement('style');st.textContent=':root{'+vars.join(';')+'}';
+      document.head.appendChild(st);
+    }
+  }catch(e){}
+  // Apply experience timeline
+  try {
+    var exp=JSON.parse(localStorage.getItem('kj_experience')||'null');
+    if(exp&&exp.length){
+      var tl=document.querySelector('#experience .timeline');
+      if(tl){
+        tl.innerHTML=exp.map(function(item){
+          var bullets=item.bullets.map(function(b){return '<li>'+(b.bold?'<strong>'+eh(b.bold)+'</strong> ':'')+eh(b.text)+'</li>';}).join('');
+          return '<div class="tl-item reveal up"><div class="tl-head"><div><div class="tl-co">'+eh(item.company)+'</div><div class="tl-role">'+eh(item.role)+(item.location?' — '+eh(item.location):'')+'</div></div><span class="tl-date">'+eh(item.date)+'</span></div><ul class="tl-list">'+bullets+'</ul></div>';
+        }).join('');
+      }
+    }
+  }catch(e){}
+})();
 </script>
 </body>
 </html>
